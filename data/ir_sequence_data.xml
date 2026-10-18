@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_cash_difference_reconciliation" model="ir.sequence">
+        <field name="name">Cash Difference Reconciliation</field>
+        <field name="code">cash.difference.reconciliation</field>
+        <field name="prefix">CDR/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

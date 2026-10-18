@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form -->
+    <record id="view_expense_express_form" model="ir.ui.view">
+        <field name="name">expense.express.form</field>
+        <field name="model">expense.express</field>
+        <field name="arch" type="xml">
+            <form string="Expense" class="o_ecc_expense_form">
+                <header>
+                    <button name="action_register_payment" type="object" string="Register Payment"
+                            class="btn-primary"
+                            invisible="payment_mode != 'to_pay' or state != 'posted' or payment_state not in ('not_paid', 'partial')"/>
+                    <button name="action_post" type="object" string="Post" class="btn-primary"
+                            invisible="state != 'draft' or not id"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_move" type="object" class="oe_stat_button" icon="fa-file-text-o"
+                                invisible="not move_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text" invisible="move_type != 'in_invoice'">Vendor Bill</span>
+                                <span class="o_stat_text" invisible="move_type == 'in_invoice'">Journal Entry</span>
+                            </div>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Paid" bg_color="text-bg-success"
+                            invisible="payment_mode != 'to_pay' or payment_state != 'paid'"/>
+                    <widget name="web_ribbon" title="In Payment" bg_color="text-bg-info"
+                            invisible="payment_state != 'in_payment'"/>
+                    <widget name="web_ribbon" title="Partially Paid" bg_color="text-bg-warning"
+                            invisible="payment_state != 'partial'"/>
+                    <widget name="web_ribbon" title="Overdue" bg_color="text-bg-danger"
+                            invisible="not is_overdue"/>
+
+                    <div class="o_ecc_amount_hero">
+                        <label for="amount" class="o_ecc_hero_label"/>
+                        <div class="o_ecc_hero_value">
+                            <field name="amount" class="o_ecc_amount_input" readonly="is_locked" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </div>
+                        <field name="payment_mode" widget="selection_badge" class="o_ecc_mode_toggle" readonly="is_locked"/>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Vegetables from market" readonly="is_locked"/></h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="category_id" options="{'no_create_edit': True}" readonly="is_locked"
+                                   placeholder="What kind of expense?"/>
+                            <field name="date" readonly="is_locked"/>
+                            <field name="partner_id" required="payment_mode == 'to_pay'" readonly="is_locked"
+                                   placeholder="Who do you owe?"
+                                   invisible="payment_mode != 'to_pay' and not partner_id"
+                                   context="{'res_partner_search_mode': 'supplier'}"/>
+                        </group>
+                        <group>
+                            <field name="journal_id" options="{'no_create': True}" readonly="is_locked"/>
+                            <field name="due_date" invisible="payment_mode != 'to_pay'" readonly="is_locked"/>
+                            <field name="payment_state" widget="badge" invisible="payment_mode != 'to_pay' or not move_id"
+                                   decoration-success="payment_state == 'paid'"
+                                   decoration-info="payment_state == 'in_payment'"
+                                   decoration-warning="payment_state == 'partial'"
+                                   decoration-danger="payment_state == 'not_paid'"/>
+                            <field name="amount_residual" invisible="payment_mode != 'to_pay' or payment_state == 'paid'"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                        </group>
+                    </group>
+
+                    <div class="o_ecc_receipts">
+                        <div class="o_ecc_section_title">
+                            <i class="fa fa-paperclip me-1" title="Receipts"/> Receipts &amp; Documents
+                        </div>
+                        <field name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                        <div class="text-muted small" invisible="attachment_ids">
+                            Add a photo of the receipt or invoice. It is also attached to the journal entry / bill.
+                        </div>
+                    </div>
+
+                    <group>
+                        <field name="notes" placeholder="Optional notes..."/>
+                    </group>
+                    <field name="company_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="move_id" invisible="1"/>
+                    <field name="move_type" invisible="1"/>
+                    <field name="is_overdue" invisible="1"/>
+                    <field name="is_locked" invisible="1"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List -->
+    <record id="view_expense_express_list" model="ir.ui.view">
+        <field name="name">expense.express.list</field>
+        <field name="model">expense.express</field>
+        <field name="arch" type="xml">
+            <list default_order="date desc" decoration-danger="is_overdue" sample="1">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="category_id" widget="badge"/>
+                <field name="partner_id" optional="show"/>
+                <field name="payment_mode" widget="badge" optional="show"
+                       decoration-muted="payment_mode == 'paid'" decoration-warning="payment_mode == 'to_pay'"/>
+                <field name="journal_id" optional="hide"/>
+                <field name="attachment_count" string="Receipts" optional="show"/>
+                <field name="amount" sum="Total"/>
+                <field name="amount_residual" sum="Total Due" optional="show" invisible="payment_mode != 'to_pay'"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="is_overdue" column_invisible="True"/>
+                <field name="payment_state" widget="badge"
+                       decoration-success="payment_state == 'paid'"
+                       decoration-info="payment_state == 'in_payment'"
+                       decoration-warning="payment_state == 'partial'"
+                       decoration-danger="payment_state == 'not_paid'"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Kanban -->
+    <record id="view_expense_express_kanban" model="ir.ui.view">
+        <field name="name">expense.express.kanban</field>
+        <field name="model">expense.express</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile o_ecc_expense_kanban" sample="1">
+                <field name="category_color"/>
+                <field name="payment_mode"/>
+                <field name="payment_state"/>
+                <field name="attachment_count"/>
+                <field name="is_overdue"/>
+                <templates>
+                    <t t-name="card" t-attf-class="oe_kanban_color_#{record.category_color.raw_value}">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <field name="name" class="fw-bold text-truncate"/>
+                            <field name="amount" widget="monetary" class="fw-bold fs-5 o_ecc_amount"/>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center text-muted small">
+                            <span><field name="date"/> · <field name="category_id"/></span>
+                            <span t-if="record.attachment_count.raw_value">
+                                <i class="fa fa-paperclip" title="Receipts"/> <field name="attachment_count"/>
+                            </span>
+                        </div>
+                        <footer class="mt-2 pt-1">
+                            <field name="partner_id" class="small text-truncate"/>
+                            <div class="ms-auto">
+                                <span t-if="record.is_overdue.raw_value" class="badge rounded-pill text-bg-danger me-1">Overdue</span>
+                                <field name="payment_state" widget="label_selection"
+                                       options="{'classes': {'paid': 'success', 'in_payment': 'info', 'partial': 'warning', 'not_paid': 'danger'}}"/>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record id="view_expense_express_search" model="ir.ui.view">
+        <field name="name">expense.express.search</field>
+        <field name="model">expense.express</field>
+        <field name="arch" type="xml">
+            <search string="Search Expenses">
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter name="filter_paid_now" string="Paid Now" domain="[('payment_mode', '=', 'paid')]"/>
+                <filter name="filter_to_pay" string="To Pay Later" domain="[('payment_mode', '=', 'to_pay')]"/>
+                <separator/>
+                <filter name="filter_unpaid" string="Waiting for Payment"
+                        domain="[('payment_mode', '=', 'to_pay'), ('payment_state', 'in', ('not_paid', 'partial'))]"/>
+                <filter name="filter_overdue" string="Overdue" domain="[('is_overdue', '=', True)]"/>
+                <separator/>
+                <filter name="filter_with_receipt" string="With Receipt" domain="[('attachment_ids', '!=', False)]"/>
+                <filter name="filter_without_receipt" string="Missing Receipt" domain="[('attachment_ids', '=', False)]"/>
+                <separator/>
+                <filter name="filter_today" string="Today"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_this_month" string="This Month"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_last_month" string="Last Month"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(months=1, day=1)).strftime('%Y-%m-%d')),
+                                 ('date', '&lt;', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_date" string="Date" date="date"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
+                    <filter name="group_vendor" string="Vendor" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_mode" string="Payment" context="{'group_by': 'payment_mode'}"/>
+                    <filter name="group_payment_state" string="Payment Status" context="{'group_by': 'payment_state'}"/>
+                    <filter name="group_user" string="Recorded By" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Analysis -->
+    <record id="view_expense_express_pivot" model="ir.ui.view">
+        <field name="name">expense.express.pivot</field>
+        <field name="model">expense.express</field>
+        <field name="arch" type="xml">
+            <pivot string="Expense Analysis" sample="1">
+                <field name="category_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_expense_express_graph" model="ir.ui.view">
+        <field name="name">expense.express.graph</field>
+        <field name="model">expense.express</field>
+        <field name="arch" type="xml">
+            <graph string="Expense Analysis" type="bar" sample="1">
+                <field name="date" interval="month"/>
+                <field name="category_id"/>
+                <field name="amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_expense_express" model="ir.actions.act_window">
+        <field name="name">Expenses</field>
+        <field name="res_model">expense.express</field>
+        <field name="view_mode">list,kanban,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_expense_express_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Record your first expense!</p>
+            <p>Paid now from the cash box or bank, or to pay later as a vendor bill. Attach the receipt photo.</p>
+        </field>
+    </record>
+
+    <record id="action_expense_bills_to_pay" model="ir.actions.act_window">
+        <field name="name">Bills to Pay</field>
+        <field name="res_model">expense.express</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_expense_express_search"/>
+        <field name="context">{'search_default_filter_unpaid': 1, 'default_payment_mode': 'to_pay'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Nothing waiting for payment</p>
+            <p>Expenses recorded as "To Pay Later" appear here until their bill is paid.</p>
+        </field>
+    </record>
+
+    <record id="action_expense_analysis" model="ir.actions.act_window">
+        <field name="name">Expense Analysis</field>
+        <field name="res_model">expense.express</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="search_view_id" ref="view_expense_express_search"/>
+        <field name="context">{'search_default_filter_this_month': 1}</field>
+    </record>
+
+</odoo>

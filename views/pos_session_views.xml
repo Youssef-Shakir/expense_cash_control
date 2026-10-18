@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Cash review form: one screen per closed session -->
+    <record id="view_pos_session_cash_review_form" model="ir.ui.view">
+        <field name="name">pos.session.cash.review.form</field>
+        <field name="model">pos.session</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form string="Cash Review" create="false" delete="false" class="o_ecc_review_form">
+                <header>
+                    <button name="action_cash_review_done" type="object" string="Mark as Reviewed"
+                            class="btn-primary" invisible="cash_review_state != 'to_review'"
+                            groups="expense_cash_control.group_expense_manager"/>
+                    <button name="action_cash_review_refresh" type="object" string="Refresh"
+                            invisible="cash_review_state == 'reviewed'"
+                            groups="expense_cash_control.group_expense_manager"/>
+                    <button name="action_cash_review_reopen" type="object" string="Reopen Review"
+                            invisible="cash_review_state != 'reviewed'"
+                            groups="expense_cash_control.group_expense_manager"/>
+                    <field name="cash_review_state" widget="statusbar" statusbar_visible="to_review,reviewed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                        <div class="o_ecc_review_meta">
+                            <span><i class="fa fa-desktop" title="Point of Sale"/> <field name="config_id" readonly="1"/></span>
+                            <span><field name="user_id" widget="many2one_avatar_user" readonly="1"/></span>
+                            <span><i class="fa fa-clock-o" title="Period"/> <field name="start_at" readonly="1"/> – <field name="stop_at" readonly="1"/></span>
+                        </div>
+                    </div>
+
+                    <div class="o_ecc_review_cards">
+                        <div class="o_ecc_review_card">
+                            <span class="o_ecc_review_label">Opening</span>
+                            <field name="cash_register_balance_start" readonly="1" class="o_ecc_review_value"/>
+                        </div>
+                        <div class="o_ecc_review_card o_ecc_tone_in">
+                            <span class="o_ecc_review_label">Cash In</span>
+                            <field name="cash_in_total" class="o_ecc_review_value"/>
+                        </div>
+                        <div class="o_ecc_review_card o_ecc_tone_out">
+                            <span class="o_ecc_review_label">Cash Out</span>
+                            <field name="cash_out_total" class="o_ecc_review_value"/>
+                        </div>
+                        <div class="o_ecc_review_card">
+                            <span class="o_ecc_review_label">Expected</span>
+                            <field name="cash_register_balance_end" readonly="1" class="o_ecc_review_value"/>
+                        </div>
+                        <div class="o_ecc_review_card">
+                            <span class="o_ecc_review_label">Counted</span>
+                            <field name="cash_register_balance_end_real" readonly="1" class="o_ecc_review_value"/>
+                        </div>
+                        <div class="o_ecc_review_card o_ecc_tone_diff">
+                            <span class="o_ecc_review_label">Difference</span>
+                            <field name="cash_register_difference" readonly="1" class="o_ecc_review_value"/>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning d-flex align-items-center gap-2" role="status"
+                         invisible="cash_to_classify_count == 0 and cash_difference_pending_count == 0">
+                        <i class="fa fa-exclamation-triangle" title="Action needed"/>
+                        <span>
+                            <field name="cash_to_classify_count" class="fw-bold"/> cash in/out and
+                            <field name="cash_difference_pending_count" class="fw-bold"/> difference(s) still need a category.
+                        </span>
+                    </div>
+                    <div class="alert alert-success d-flex align-items-center gap-2" role="status"
+                         invisible="cash_to_classify_count or cash_difference_pending_count or cash_review_state == 'reviewed'">
+                        <i class="fa fa-check-circle" title="Ready"/>
+                        <span>Everything is classified. Check the counts and mark the session as reviewed.</span>
+                    </div>
+
+                    <notebook>
+                        <page string="Cash In / Out" name="cash_moves">
+                            <field name="cash_move_ids" readonly="cash_review_state == 'reviewed'">
+                                <list editable="bottom" create="false" delete="false"
+                                      decoration-muted="state == 'classified'">
+                                    <field name="date" readonly="1" optional="hide"/>
+                                    <field name="user_id" widget="many2one_avatar_user" readonly="1" optional="show"/>
+                                    <field name="name" readonly="1"/>
+                                    <field name="move_type" widget="badge" readonly="1"
+                                           decoration-success="move_type == 'in'" decoration-danger="move_type == 'out'"/>
+                                    <field name="amount_abs" readonly="1"/>
+                                    <field name="amount" string="Net" sum="Net" readonly="1" optional="hide"
+                                           decoration-success="amount &gt; 0" decoration-danger="amount &lt; 0"/>
+                                    <field name="classification_type" readonly="state == 'classified'" optional="show"/>
+                                    <field name="category_id" readonly="state == 'classified'" invisible="classification_type == 'partner'"
+                                           options="{'no_create': True, 'no_open': True}" placeholder="Choose a category..."/>
+                                    <field name="partner_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                           required="classification_type == 'partner'" placeholder="Choose the partner..."
+                                           options="{'no_create': True}"/>
+                                    <field name="bill_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                           optional="show" placeholder="Reconcile later" options="{'no_create': True}"/>
+                                    <field name="partner_account_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                           optional="hide" options="{'no_create': True}"/>
+                                    <field name="partner_commercial_id" column_invisible="True"/>
+<field name="cash_direction" column_invisible="True"/>
+                                    <field name="classified_at_pos" string="At POS" readonly="1" optional="hide"/>
+                                    <field name="state" widget="badge" readonly="1"
+                                           decoration-warning="state == 'to_classify'" decoration-success="state == 'classified'"/>
+                                    <button name="action_classify" type="object" string="Classify" icon="fa-check"
+                                            class="btn-link text-success" invisible="state == 'classified'"/>
+                                    <button name="action_reset" type="object" string="Reset" icon="fa-undo"
+                                            class="btn-link text-muted" invisible="state != 'classified'"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="company_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cash Differences" name="cash_differences">
+                            <field name="cash_difference_ids" readonly="cash_review_state == 'reviewed'">
+                                <list editable="bottom" create="false" delete="false"
+                                      decoration-muted="state == 'classified'">
+                                    <field name="name" readonly="1"/>
+                                    <field name="date" readonly="1"/>
+                                    <field name="difference_type" widget="badge" readonly="1"
+                                           decoration-danger="difference_type == 'loss'"
+                                           decoration-success="difference_type == 'gain'"/>
+                                    <field name="amount" sum="Total" readonly="1"/>
+                                    <field name="classification_type" readonly="state == 'classified'" optional="show"/>
+                                    <field name="category_id" readonly="state == 'classified'" invisible="classification_type == 'partner'"
+                                           options="{'no_create': True, 'no_open': True}" placeholder="Choose a category..."/>
+                                    <field name="partner_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                           required="classification_type == 'partner'" placeholder="Choose the partner..."
+                                           options="{'no_create': True}"/>
+                                    <field name="bill_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                           optional="show" placeholder="Reconcile later" options="{'no_create': True}"/>
+                                    <field name="partner_account_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                           optional="hide" options="{'no_create': True}"/>
+                                    <field name="partner_commercial_id" column_invisible="True"/>
+<field name="cash_direction" column_invisible="True"/>
+                                    <field name="state" widget="badge" readonly="1"
+                                           decoration-warning="state == 'pending'" decoration-success="state == 'classified'"/>
+                                    <button name="action_classify" type="object" string="Classify" icon="fa-check"
+                                            class="btn-link text-success" invisible="state == 'classified'"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Review Notes" name="notes">
+                            <group>
+                                <field name="cash_reviewed_by_id" invisible="not cash_reviewed_by_id"/>
+                                <field name="cash_reviewed_date" invisible="not cash_reviewed_date"/>
+                            </group>
+                            <field name="cash_review_note" placeholder="Anything the cashier or accountant should know..."/>
+                        </page>
+                    </notebook>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pos_session_cash_review_list" model="ir.ui.view">
+        <field name="name">pos.session.cash.review.list</field>
+        <field name="model">pos.session</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <list string="Session Reviews" create="false" delete="false"
+                  decoration-warning="cash_review_state == 'to_review'" decoration-muted="cash_review_state == 'reviewed'">
+                <field name="name"/>
+                <field name="config_id"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="stop_at" string="Closed On"/>
+                <field name="cash_in_total" sum="Total"/>
+                <field name="cash_out_total" sum="Total"/>
+                <field name="cash_register_difference" string="Difference" sum="Total"
+                       decoration-danger="cash_register_difference &lt; 0" decoration-success="cash_register_difference &gt; 0"/>
+                <field name="cash_to_classify_count" string="To Classify"/>
+                <field name="cash_difference_pending_count" string="Differences"/>
+                <field name="cash_review_state" widget="badge"
+                       decoration-warning="cash_review_state == 'to_review'" decoration-success="cash_review_state == 'reviewed'"/>
+                <field name="cash_reviewed_by_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_pos_session_cash_review_search" model="ir.ui.view">
+        <field name="name">pos.session.cash.review.search</field>
+        <field name="model">pos.session</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="config_id"/>
+                <field name="user_id"/>
+                <filter name="to_review" string="To Review" domain="[('cash_review_state', '=', 'to_review')]"/>
+                <filter name="reviewed" string="Reviewed" domain="[('cash_review_state', '=', 'reviewed')]"/>
+                <separator/>
+                <filter name="filter_stop_at" string="Closed On" date="stop_at"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_config" string="Point of Sale" context="{'group_by': 'config_id'}"/>
+                    <filter name="group_user" string="Cashier" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_day" string="Day" context="{'group_by': 'stop_at:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pos_session_cash_review" model="ir.actions.act_window">
+        <field name="name">Session Reviews</field>
+        <field name="res_model">pos.session</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'closed'), ('cash_review_state', '!=', False)]</field>
+        <field name="context">{'search_default_to_review': 1, 'create': False}</field>
+        <field name="search_view_id" ref="view_pos_session_cash_review_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No session waiting for review</p>
+            <p>Every POS session with a cash drawer appears here when it is closed.</p>
+        </field>
+    </record>
+    <record id="action_pos_session_cash_review_view_list" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_pos_session_cash_review_list"/>
+        <field name="act_window_id" ref="action_pos_session_cash_review"/>
+    </record>
+    <record id="action_pos_session_cash_review_view_form" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_pos_session_cash_review_form"/>
+        <field name="act_window_id" ref="action_pos_session_cash_review"/>
+    </record>
+
+    <!-- Shortcut from the standard session form -->
+    <record id="view_pos_session_form_cash_review" model="ir.ui.view">
+        <field name="name">pos.session.form.cash.review</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_cash_review" type="object" class="oe_stat_button" icon="fa-money"
+                        invisible="not cash_review_state" groups="expense_cash_control.group_expense_user">
+                    <div class="o_stat_info">
+                        <span class="o_stat_value"><field name="cash_review_state"/></span>
+                        <span class="o_stat_text">Cash Review</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

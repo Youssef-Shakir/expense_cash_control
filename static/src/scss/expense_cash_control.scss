@@ -1,0 +1,363 @@
+// Expenses & Cash Control - Yousif Shakir / Donialink
+// Uses Bootstrap CSS variables so it follows light / dark mode, and logical
+// properties (inline-start/end) so it mirrors correctly in Arabic (RTL).
+
+$ecc-palette: (
+    0: #8e8e93, 1: #ff3b30, 2: #ff9500, 3: #ffcc00, 4: #34c759, 5: #5856d6,
+    6: #af52de, 7: #00c7be, 8: #007aff, 9: #ff2d55, 10: #30b0c7, 11: #a2845e,
+);
+
+.o_ecc_dashboard {
+    background: var(--bs-tertiary-bg, #f5f5f7);
+
+    .o_ecc_container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 28px 24px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    // Header
+    .o_ecc_header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+    }
+    .o_ecc_title {
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
+        margin: 0 0 2px;
+        color: var(--bs-emphasis-color);
+    }
+    .o_ecc_subtitle {
+        margin: 0;
+        color: var(--bs-secondary-color);
+        font-size: 15px;
+    }
+    .o_ecc_header_actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .o_ecc_btn {
+        border-radius: 10px;
+        padding: 9px 16px;
+        font-weight: 600;
+    }
+
+    // Grids
+    .o_ecc_grid {
+        display: grid;
+        gap: 16px;
+    }
+    .o_ecc_grid_3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .o_ecc_grid_2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 991.98px) {
+        .o_ecc_grid_3, .o_ecc_grid_2 { grid-template-columns: minmax(0, 1fr); }
+        .o_ecc_container { padding: 16px; }
+    }
+
+    // Shared card look
+    .o_ecc_kpi, .o_ecc_panel, .o_ecc_tile, .o_ecc_bar_row, .o_ecc_recent_row {
+        border: 1px solid var(--bs-border-color-translucent);
+        text-align: start;
+        color: inherit;
+        font: inherit;
+    }
+    .o_ecc_kpi, .o_ecc_panel {
+        background: var(--bs-body-bg);
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    // KPI
+    .o_ecc_kpi {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 18px 20px;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        &:hover, &:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+    }
+    .o_ecc_kpi_icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 6px;
+        font-size: 16px;
+    }
+    .o_ecc_tone_blue { background: rgba(0, 122, 255, 0.12); color: #007aff; }
+    .o_ecc_tone_purple { background: rgba(88, 86, 214, 0.12); color: #5856d6; }
+    .o_ecc_tone_orange { background: rgba(255, 149, 0, 0.14); color: #ff9500; }
+    .o_ecc_kpi_label {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--bs-secondary-color);
+    }
+    .o_ecc_kpi_value {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.15;
+        color: var(--bs-emphasis-color);
+        font-variant-numeric: tabular-nums;
+    }
+    .o_ecc_kpi_hint {
+        font-size: 13px;
+        color: var(--bs-secondary-color);
+    }
+    .o_ecc_trend {
+        margin-inline-start: 6px;
+        font-weight: 600;
+    }
+    .o_ecc_trend_up { color: #ff3b30; }
+    .o_ecc_trend_down { color: #34c759; }
+
+    // Panels
+    .o_ecc_panel {
+        padding: 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .o_ecc_panel_head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 6px;
+        h2 {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--bs-emphasis-color);
+        }
+    }
+    .o_ecc_empty {
+        color: var(--bs-secondary-color);
+        padding: 18px 0;
+        text-align: center;
+    }
+
+    // POS tiles
+    .o_ecc_tile {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 16px;
+        border-radius: 12px;
+        background: var(--bs-tertiary-bg);
+        transition: background 0.15s ease, border-color 0.15s ease;
+        &:hover { border-color: var(--bs-primary); }
+    }
+    .o_ecc_tile_count {
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
+    }
+    .o_ecc_tile_label { font-weight: 600; }
+    .o_ecc_tile_hint { font-size: 12px; color: var(--bs-secondary-color); }
+    .o_ecc_tile_alert {
+        background: rgba(255, 149, 0, 0.10);
+        border-color: rgba(255, 149, 0, 0.35);
+        .o_ecc_tile_count { color: #e08600; }
+    }
+    .o_ecc_tile_ok .o_ecc_tile_count { color: #34c759; }
+
+    // Category bars
+    .o_ecc_bar_row {
+        display: grid;
+        grid-template-columns: minmax(90px, 1.2fr) 2fr auto;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border-color: transparent;
+        background: transparent;
+        &:hover { background: var(--bs-tertiary-bg); }
+    }
+    .o_ecc_bar_name {
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .o_ecc_bar_track {
+        height: 8px;
+        border-radius: 4px;
+        background: var(--bs-secondary-bg);
+        overflow: hidden;
+    }
+    .o_ecc_bar_fill {
+        display: block;
+        height: 100%;
+        border-radius: 4px;
+    }
+    @each $index, $color in $ecc-palette {
+        .o_ecc_color_#{$index} { background: $color; }
+    }
+    .o_ecc_bar_value {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    // Recent expenses
+    .o_ecc_recent_row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        border-radius: 10px;
+        border-color: transparent;
+        background: transparent;
+        &:hover { background: var(--bs-tertiary-bg); }
+    }
+    .o_ecc_recent_main, .o_ecc_recent_side {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+    .o_ecc_recent_side { align-items: flex-end; gap: 2px; }
+    .o_ecc_recent_name {
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .o_ecc_recent_meta { font-size: 12px; color: var(--bs-secondary-color); }
+    .o_ecc_recent_amount { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    .o_ecc_credit {
+        text-align: center;
+        font-size: 12px;
+        color: var(--bs-secondary-color);
+        padding: 8px 0 4px;
+    }
+}
+
+// Expense form
+.o_ecc_expense_form {
+    .o_ecc_amount_hero {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 24px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+        border-radius: 14px;
+        background: var(--bs-tertiary-bg);
+        .o_ecc_hero_label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--bs-secondary-color);
+            width: 100%;
+            margin: 0;
+        }
+        .o_ecc_hero_value {
+            flex: 1 1 220px;
+            .o_field_monetary, input {
+                font-size: 30px;
+                font-weight: 700;
+                font-variant-numeric: tabular-nums;
+            }
+        }
+    }
+    .o_ecc_mode_toggle {
+        width: 100%;
+        .btn {
+            border-radius: 999px;
+            padding: 6px 18px;
+            margin-inline-end: 6px;
+            font-weight: 600;
+        }
+        .btn.active {
+            background: var(--bs-primary);
+            border-color: var(--bs-primary);
+            color: #fff;
+        }
+    }
+    .o_ecc_receipts {
+        margin: 8px 0 16px;
+        padding: 14px 16px;
+        border: 2px dashed var(--bs-border-color);
+        border-radius: 12px;
+        &:hover { border-color: var(--bs-primary); }
+    }
+    .o_ecc_section_title {
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+}
+
+// Session review
+.o_ecc_review_form {
+    .o_ecc_review_cards {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 10px;
+        margin: 12px 0 16px;
+        @media (max-width: 991.98px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    .o_ecc_review_card {
+        display: flex;
+        flex-direction: column;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: var(--bs-tertiary-bg);
+    }
+    .o_ecc_review_label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--bs-secondary-color);
+    }
+    .o_ecc_review_value {
+        font-size: 19px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+    .o_ecc_tone_in .o_ecc_review_value { color: #34c759; }
+    .o_ecc_tone_out .o_ecc_review_value { color: #ff3b30; }
+    .o_ecc_tone_diff { outline: 1px solid rgba(255, 149, 0, 0.45); }
+}
+
+// Kanban cards
+.o_ecc_expense_kanban .o_ecc_amount,
+.o_ecc_difference_kanban .o_ecc_amount {
+    font-variant-numeric: tabular-nums;
+}
+.o_ecc_difference_kanban .o_ecc_diff_card {
+    border-inline-start: 4px solid transparent;
+    &.o_ecc_diff_loss { border-inline-start-color: #ff3b30; }
+    &.o_ecc_diff_gain { border-inline-start-color: #34c759; }
+}
+
+.o_ecc_review_form .o_ecc_review_meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    color: var(--bs-secondary-color);
+    > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+}

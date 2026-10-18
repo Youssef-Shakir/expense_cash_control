@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="expense_cash_control.CashMovePopup" t-inherit="point_of_sale.CashMovePopup" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('form-floating')]" position="before">
+            <div t-if="useCashCategories" class="o_ecc_pos_categories mb-3">
+                <div class="o_ecc_pos_categories_title">
+                    Category
+                    <span t-if="cashCategoryRequired" class="text-danger">*</span>
+                </div>
+                <div class="o_ecc_pos_category_grid">
+                    <button t-foreach="cashCategories" t-as="category" t-key="category.id"
+                            t-attf-class="o_ecc_pos_category btn btn-lg {{state.cashCategoryId === category.id ? 'btn-primary' : 'btn-secondary'}}"
+                            t-on-click="() => this.selectCashCategory(category)">
+                        <span t-attf-class="o_ecc_pos_dot o_ecc_pos_color_{{category.color or 0}}"/>
+                        <span class="o_ecc_pos_name" t-esc="category.name"/>
+                        <i t-if="state.cashCategoryId === category.id" class="fa fa-check ms-auto" title="Selected"/>
+                    </button>
+                </div>
+                <div t-if="!cashCategories.length" class="text-muted small mt-1">
+                    No category for this type of move.
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//label[@for='reason']" position="replace">
+            <label for="reason">
+                <t t-if="useCashCategories">Note (optional)</t>
+                <t t-else="">Reason</t>
+            </label>
+        </xpath>
+    </t>
+
+</templates>

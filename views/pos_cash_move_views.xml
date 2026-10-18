@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_pos_cash_move_list" model="ir.ui.view">
+        <field name="name">pos.cash.move.list</field>
+        <field name="model">pos.cash.move</field>
+        <field name="arch" type="xml">
+            <list string="POS Cash In/Out" editable="bottom" create="false" delete="false" sample="1" expand="1"
+                  decoration-muted="state == 'classified'">
+                <header>
+                    <button name="action_scan" type="object" string="Scan Now" class="btn-secondary"
+                            display="always" groups="expense_cash_control.group_expense_manager"/>
+                    <button name="action_classify" type="object" string="Classify Selected" class="btn-primary"
+                            groups="expense_cash_control.group_expense_manager"/>
+                    <button name="action_reset" type="object" string="Reset to Classify"
+                            groups="expense_cash_control.group_expense_manager"/>
+                </header>
+                <field name="date" readonly="1"/>
+                <field name="session_id" readonly="1" optional="show"/>
+                <field name="config_id" readonly="1" optional="hide"/>
+                <field name="user_id" widget="many2one_avatar_user" readonly="1" optional="show"/>
+                <field name="name" readonly="1"/>
+                <field name="move_type" widget="badge" readonly="1"
+                       decoration-success="move_type == 'in'" decoration-danger="move_type == 'out'"/>
+                <field name="amount_abs" sum="Total" readonly="1"/>
+                <field name="classification_type" readonly="state == 'classified'" optional="show"/>
+                <field name="category_id" readonly="state == 'classified'" invisible="classification_type == 'partner'"
+                       options="{'no_create': True, 'no_open': True}" placeholder="Choose a category..."/>
+                <field name="partner_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                       required="classification_type == 'partner'" placeholder="Choose the partner..."
+                       options="{'no_create': True}"/>
+                <field name="bill_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                       optional="show" placeholder="Reconcile later" options="{'no_create': True}"/>
+                <field name="partner_account_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                       optional="hide" options="{'no_create': True}"/>
+                <field name="partner_commercial_id" column_invisible="True"/>
+<field name="cash_direction" column_invisible="True"/>
+                <field name="classified_at_pos" string="At POS" optional="show" readonly="1"/>
+                <field name="state" widget="badge" readonly="1"
+                       decoration-warning="state == 'to_classify'" decoration-success="state == 'classified'"/>
+                <button name="action_classify" type="object" string="Classify" icon="fa-check"
+                        class="btn-link text-success" invisible="state == 'classified'"
+                        groups="expense_cash_control.group_expense_manager"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="company_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_pos_cash_move_form" model="ir.ui.view">
+        <field name="name">pos.cash.move.form</field>
+        <field name="model">pos.cash.move</field>
+        <field name="arch" type="xml">
+            <form string="POS Cash In/Out" create="false" delete="false">
+                <header>
+                    <button name="action_classify" type="object" string="Classify" class="btn-primary"
+                            invisible="state == 'classified'" groups="expense_cash_control.group_expense_manager"/>
+                    <button name="action_reset" type="object" string="Reset to Classify"
+                            invisible="state != 'classified'" groups="expense_cash_control.group_expense_manager"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_journal_entry" type="object" class="oe_stat_button" icon="fa-book">
+                            <span class="o_stat_text">Journal Entry</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <span class="badge rounded-pill text-bg-success" invisible="move_type != 'in'">Cash In</span>
+                        <span class="badge rounded-pill text-bg-danger" invisible="move_type != 'out'">Cash Out</span>
+                        <h1><field name="amount_abs"/></h1>
+                        <h3 class="text-muted"><field name="name"/></h3>
+                    </div>
+                    <group>
+                        <group string="Classification">
+                            <field name="classification_type" widget="radio" options="{'horizontal': true}"
+                                   readonly="state == 'classified'"/>
+                            <field name="category_id" readonly="state == 'classified'" invisible="classification_type == 'partner'"
+                                   options="{'no_create': True}" placeholder="Choose a category..."/>
+                            <field name="partner_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                   required="classification_type == 'partner'" placeholder="Who received / gave the money?"/>
+                            <field name="partner_account_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                   options="{'no_create': True}"/>
+                            <field name="bill_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                   placeholder="Optional: reconcile with this bill now" options="{'no_create': True}"/>
+                            <field name="partner_commercial_id" invisible="1"/>
+                            <field name="cash_direction" invisible="1"/>
+                            <field name="classified_at_pos"/>
+                            <field name="classified_by_id" invisible="state != 'classified'"/>
+                            <field name="classified_date" invisible="state != 'classified'"/>
+                        </group>
+                        <group string="Source">
+                            <field name="date"/>
+                            <field name="session_id"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="journal_id"/>
+                            <field name="account_move_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="Notes..."/>
+                    <field name="move_type" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pos_cash_move_search" model="ir.ui.view">
+        <field name="name">pos.cash.move.search</field>
+        <field name="model">pos.cash.move</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="session_id"/>
+                <field name="category_id"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <filter name="to_classify" string="To Classify" domain="[('state', '=', 'to_classify')]"/>
+                <filter name="classified" string="Classified" domain="[('state', '=', 'classified')]"/>
+                <separator/>
+                <filter name="partner_payments" string="Partner Payments" domain="[('classification_type', '=', 'partner')]"/>
+                <separator/>
+                <filter name="cash_in" string="Cash In" domain="[('move_type', '=', 'in')]"/>
+                <filter name="cash_out" string="Cash Out" domain="[('move_type', '=', 'out')]"/>
+                <separator/>
+                <filter name="today" string="Today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_date" string="Date" date="date"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_date" string="Day" context="{'group_by': 'date:day'}"/>
+                    <filter name="group_session" string="Session" context="{'group_by': 'session_id'}"/>
+                    <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
+                    <filter name="group_partner" string="Partner" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_user" string="Cashier" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_type" string="Type" context="{'group_by': 'move_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_pos_cash_move_pivot" model="ir.ui.view">
+        <field name="name">pos.cash.move.pivot</field>
+        <field name="model">pos.cash.move</field>
+        <field name="arch" type="xml">
+            <pivot string="Cash In/Out Analysis">
+                <field name="category_id" type="row"/>
+                <field name="move_type" type="col"/>
+                <field name="amount_abs" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_pos_cash_move" model="ir.actions.act_window">
+        <field name="name">Cash In / Out</field>
+        <field name="res_model">pos.cash.move</field>
+        <field name="view_mode">list,form,pivot</field>
+        <field name="context">{'search_default_to_classify': 1, 'search_default_group_date': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No cash in/out waiting</p>
+            <p>Cash In / Cash Out made from the POS without a category appear here every day.
+               Pick a category and click <strong>Classify</strong> to post them on the right account.</p>
+        </field>
+    </record>
+
+</odoo>

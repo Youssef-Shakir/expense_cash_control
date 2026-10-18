@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_expense_express_root"
+              name="Expenses &amp; Cash"
+              web_icon="expense_cash_control,static/description/icon.png"
+              groups="expense_cash_control.group_expense_user"
+              sequence="45"/>
+
+    <menuitem id="menu_expense_dashboard"
+              name="Overview"
+              parent="menu_expense_express_root"
+              action="action_expense_cash_dashboard"
+              sequence="1"/>
+
+    <!-- Expenses -->
+    <menuitem id="menu_expense_section" name="Expenses" parent="menu_expense_express_root" sequence="10"/>
+    <menuitem id="menu_expense_express_all" name="All Expenses" parent="menu_expense_section"
+              action="action_expense_express" sequence="10"/>
+    <menuitem id="menu_expense_bills_to_pay" name="Bills to Pay" parent="menu_expense_section"
+              action="action_expense_bills_to_pay" sequence="20"/>
+
+    <!-- POS cash -->
+    <menuitem id="menu_cash_difference_parent" name="POS Cash" parent="menu_expense_express_root"
+              groups="expense_cash_control.group_expense_manager" sequence="20"/>
+    <menuitem id="menu_pos_cash_move" name="Cash In / Out" parent="menu_cash_difference_parent"
+              action="action_pos_cash_move" sequence="10"/>
+    <menuitem id="menu_cash_difference_dashboard" name="Cash Differences" parent="menu_cash_difference_parent"
+              action="action_cash_difference_dashboard" sequence="20"/>
+    <menuitem id="menu_pos_session_cash_review" name="Session Reviews" parent="menu_cash_difference_parent"
+              action="action_pos_session_cash_review" sequence="30"/>
+
+    <!-- Reporting -->
+    <menuitem id="menu_expense_reporting" name="Reporting" parent="menu_expense_express_root" sequence="50"/>
+    <menuitem id="menu_expense_analysis" name="Expense Analysis" parent="menu_expense_reporting"
+              action="action_expense_analysis" sequence="10"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_expense_express_config" name="Configuration" parent="menu_expense_express_root"
+              groups="expense_cash_control.group_expense_manager" sequence="100"/>
+    <menuitem id="menu_expense_category" name="Categories" parent="menu_expense_express_config"
+              action="action_expense_category" sequence="10"/>
+
+</odoo>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Kanban (main view) -->
+    <record id="view_cash_difference_dashboard" model="ir.ui.view">
+        <field name="name">cash.difference.reconciliation.dashboard</field>
+        <field name="model">cash.difference.reconciliation</field>
+        <field name="arch" type="xml">
+            <kanban class="o_ecc_difference_kanban" create="false" sample="1">
+                <header>
+                    <button name="action_detect_cash_differences" type="object"
+                            string="Scan for Differences" class="btn-primary" display="always"
+                            groups="expense_cash_control.group_expense_manager"/>
+                </header>
+                <field name="difference_type"/>
+                <field name="category_id"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+                <field name="currency_id"/>
+                <templates>
+                    <t t-name="card" t-attf-class="o_ecc_diff_card o_ecc_diff_#{record.difference_type.raw_value}">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <field name="name" class="fw-bold"/>
+                            <span t-attf-class="badge rounded-pill #{record.difference_type.raw_value == 'loss' ? 'text-bg-danger' : 'text-bg-success'}">
+                                <field name="difference_type"/>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div class="text-muted small">
+                                <div><field name="date"/></div>
+                                <div><field name="session_id"/></div>
+                                <div><field name="cashier_id" widget="many2one_avatar_user"/></div>
+                            </div>
+                            <field name="amount" widget="monetary" class="fs-3 fw-bold o_ecc_amount"/>
+                        </div>
+                        <footer class="mt-2 pt-1">
+                            <div t-if="record.partner_id.raw_value" class="text-muted">
+                                <i class="fa fa-user me-1" title="Partner"/><field name="partner_id"/>
+                            </div>
+                            <div t-elif="record.category_id.raw_value" class="text-muted">
+                                <i class="fa fa-tag me-1" title="Category"/><field name="category_id"/>
+                            </div>
+                            <div t-else="" class="text-warning fw-semibold">
+                                <i class="fa fa-exclamation-triangle me-1" title="Not classified"/>Not classified
+                            </div>
+                            <field name="state" widget="label_selection" class="ms-auto"
+                                   options="{'classes': {'pending': 'warning', 'classified': 'success'}}"/>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- List -->
+    <record id="view_cash_difference_reconciliation_list" model="ir.ui.view">
+        <field name="name">cash.difference.reconciliation.list</field>
+        <field name="model">cash.difference.reconciliation</field>
+        <field name="arch" type="xml">
+            <list string="Cash Differences" editable="bottom" create="false" delete="false"
+                  decoration-muted="state == 'classified'">
+                <header>
+                    <button name="action_detect_cash_differences" type="object"
+                            string="Scan for Differences" class="btn-secondary" display="always"
+                            groups="expense_cash_control.group_expense_manager"/>
+                    <button name="action_classify" type="object" string="Classify Selected" class="btn-primary"
+                            groups="expense_cash_control.group_expense_manager"/>
+                </header>
+                <field name="date" readonly="1"/>
+                <field name="name" readonly="1"/>
+                <field name="session_id" readonly="1" optional="show"/>
+                <field name="cashier_id" widget="many2one_avatar_user" readonly="1" optional="show"/>
+                <field name="difference_type" widget="badge" readonly="1"
+                       decoration-danger="difference_type == 'loss'"
+                       decoration-success="difference_type == 'gain'"/>
+                <field name="amount" sum="Total" readonly="1"/>
+                <field name="original_account_id" optional="hide" readonly="1"/>
+                <field name="classification_type" readonly="state == 'classified'" optional="show"/>
+                <field name="category_id" readonly="state == 'classified'" invisible="classification_type == 'partner'"
+                       options="{'no_create': True, 'no_open': True}" placeholder="Choose a category..."/>
+                <field name="partner_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                       required="classification_type == 'partner'" placeholder="Choose the partner..."
+                       options="{'no_create': True}"/>
+                <field name="bill_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                       optional="show" placeholder="Reconcile later" options="{'no_create': True}"/>
+                <field name="partner_account_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                       optional="hide" options="{'no_create': True}"/>
+                <field name="partner_commercial_id" column_invisible="True"/>
+<field name="cash_direction" column_invisible="True"/>
+                <field name="state" widget="badge" readonly="1"
+                       decoration-warning="state == 'pending'"
+                       decoration-success="state == 'classified'"/>
+                <field name="currency_id" column_invisible="True"/>
+                <button name="action_classify" string="Classify" type="object" icon="fa-check"
+                        class="btn-link text-success" invisible="state == 'classified'"
+                        groups="expense_cash_control.group_expense_manager"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="view_cash_difference_reconciliation_form" model="ir.ui.view">
+        <field name="name">cash.difference.reconciliation.form</field>
+        <field name="model">cash.difference.reconciliation</field>
+        <field name="arch" type="xml">
+            <form string="Cash Difference" create="false">
+                <header>
+                    <button name="action_classify" string="Classify" type="object" class="btn-primary"
+                            invisible="state == 'classified'" groups="expense_cash_control.group_expense_manager"/>
+                    <button name="action_reset" string="Reset" type="object"
+                            invisible="state != 'classified'" groups="expense_cash_control.group_expense_manager"
+                            confirm="The correcting entry will be cancelled. Continue?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,classified"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_original_move" type="object"
+                                class="oe_stat_button" icon="fa-file-text-o">
+                            <span class="o_stat_text">Original Entry</span>
+                        </button>
+                        <button name="action_view_correcting_move" type="object"
+                                class="oe_stat_button" icon="fa-exchange"
+                                invisible="state != 'classified'">
+                            <span class="o_stat_text">Correcting Entry</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <field name="difference_type" widget="badge"
+                               decoration-danger="difference_type == 'loss'"
+                               decoration-success="difference_type == 'gain'"/>
+                        <h1><field name="amount"/></h1>
+                        <h3 class="text-muted"><field name="name" readonly="1"/></h3>
+                    </div>
+                    <group>
+                        <group string="Classification">
+                            <field name="classification_type" widget="radio" options="{'horizontal': true}"
+                                   readonly="state == 'classified'"/>
+                            <field name="category_id" readonly="state == 'classified'" invisible="classification_type == 'partner'"
+                                   options="{'no_create': True}" placeholder="Select expense category..."/>
+                            <field name="partner_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                   required="classification_type == 'partner'" placeholder="Who took / gave the money?"/>
+                            <field name="partner_account_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                   options="{'no_create': True}"/>
+                            <field name="bill_id" readonly="state == 'classified'" invisible="classification_type != 'partner'"
+                                   placeholder="Optional: reconcile with this bill now" options="{'no_create': True}"/>
+                            <field name="partner_commercial_id" invisible="1"/>
+                            <field name="cash_direction" invisible="1"/>
+                            <field name="correcting_move_id" readonly="1" invisible="not correcting_move_id"/>
+                        </group>
+                        <group string="Details">
+                            <field name="date"/>
+                            <field name="session_id"/>
+                            <field name="cashier_id" widget="many2one_avatar_user"/>
+                            <field name="original_account_id"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Source">
+                        <field name="original_move_id" readonly="1"/>
+                        <field name="original_move_line_id" readonly="1"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <field name="notes" placeholder="Add notes..."/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record id="view_cash_difference_reconciliation_search" model="ir.ui.view">
+        <field name="name">cash.difference.reconciliation.search</field>
+        <field name="model">cash.difference.reconciliation</field>
+        <field name="arch" type="xml">
+            <search string="Cash Differences">
+                <field name="name"/>
+                <field name="session_id"/>
+                <field name="cashier_id"/>
+                <field name="category_id"/>
+                <field name="partner_id"/>
+                <field name="original_move_id"/>
+                <separator/>
+                <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Classified" name="classified" domain="[('state', '=', 'classified')]"/>
+                <separator/>
+                <filter string="Partner Payments" name="partner_payments" domain="[('classification_type', '=', 'partner')]"/>
+                <separator/>
+                <filter string="Cash Loss" name="loss" domain="[('difference_type', '=', 'loss')]"/>
+                <filter string="Cash Gain" name="gain" domain="[('difference_type', '=', 'gain')]"/>
+                <separator/>
+                <filter string="Date" name="filter_date" date="date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Type" name="group_type" context="{'group_by': 'difference_type'}"/>
+                    <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>
+                    <filter string="Partner" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Cashier" name="group_cashier" context="{'group_by': 'cashier_id'}"/>
+                    <filter string="Point of Sale" name="group_config" context="{'group_by': 'config_id'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_cash_difference_dashboard" model="ir.actions.act_window">
+        <field name="name">Cash Differences</field>
+        <field name="res_model">cash.difference.reconciliation</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_id" ref="view_cash_difference_dashboard"/>
+        <field name="search_view_id" ref="view_cash_difference_reconciliation_search"/>
+        <field name="context">{'search_default_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No cash differences to process</p>
+            <p>Differences are collected automatically when a POS session closes.
+               You can also click <strong>Scan for Differences</strong>.</p>
+        </field>
+    </record>
+
+    <record id="action_cash_difference_dashboard_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_cash_difference_dashboard"/>
+        <field name="act_window_id" ref="action_cash_difference_dashboard"/>
+    </record>
+    <record id="action_cash_difference_dashboard_view_list" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_cash_difference_reconciliation_list"/>
+        <field name="act_window_id" ref="action_cash_difference_dashboard"/>
+    </record>
+
+    <record id="action_scan_cash_differences" model="ir.actions.server">
+        <field name="name">Scan for Differences</field>
+        <field name="model_id" ref="model_cash_difference_reconciliation"/>
+        <field name="state">code</field>
+        <field name="code">action = env['cash.difference.reconciliation'].action_detect_cash_differences()</field>
+    </record>
+
+</odoo>

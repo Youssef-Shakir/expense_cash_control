@@ -1,0 +1,2205 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* expense_cash_control
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0-20251106\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-17 23:16+0000\n"
+"PO-Revision-Date: 2026-10-17 23:16+0000\n"
+"Last-Translator: Yousif Shakir\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/pos_cash_move.py:0
+msgid "\"%s\" was already reconciled in Accounting."
+msgstr "\"%s\" تمت تسويته مسبقاً في المحاسبة."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "% vs last month"
+msgstr "% مقارنة بالشهر الماضي"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "%(count)s gain(s) totaling %(amount)s"
+msgstr "%(count)s زيادة بإجمالي %(amount)s"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "%(count)s loss(es) totaling %(amount)s"
+msgstr "%(count)s عجز بإجمالي %(amount)s"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "%s cash differences reclassified."
+msgstr "تمت إعادة تصنيف %s من فروقات النقد."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "%s has already been classified."
+msgstr "%s مصنّف مسبقاً."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/pos_cash_move.py:0
+msgid "%s new cash in/out to classify."
+msgstr "%s حركة إيداع/سحب جديدة بانتظار التصنيف."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid ""
+"<i class=\"fa fa-check-circle\" title=\"Ready\"/>\n"
+"                        <span>Everything is classified. Check the counts and mark the session as reviewed.</span>"
+msgstr ""
+"<i class=\"fa fa-check-circle\" title=\"جاهز\"/>\n"
+"                        <span>تم تصنيف كل شيء. راجع المبالغ ثم اعتمد مراجعة الجلسة.</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<i class=\"fa fa-clock-o\" title=\"Period\"/>"
+msgstr "<i class=\"fa fa-clock-o\" title=\"الفترة\"/>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<i class=\"fa fa-desktop\" title=\"Point of Sale\"/>"
+msgstr "<i class=\"fa fa-desktop\" title=\"نقطة البيع\"/>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_dashboard
+msgid ""
+"<i class=\"fa fa-exclamation-triangle me-1\" title=\"Not classified\"/>Not "
+"classified"
+msgstr "<i class=\"fa fa-exclamation-triangle me-1\" title=\"غير مصنّف\"/>غير مصنّف"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<i class=\"fa fa-exclamation-triangle\" title=\"Action needed\"/>"
+msgstr "<i class=\"fa fa-exclamation-triangle\" title=\"إجراء مطلوب\"/>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid ""
+"<i class=\"fa fa-paperclip me-1\" title=\"Receipts\"/> Receipts &amp; "
+"Documents"
+msgstr "<i class=\"fa fa-paperclip me-1\" title=\"الإيصالات\"/> الإيصالات والمستندات"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_kanban
+msgid "<i class=\"fa fa-paperclip\" title=\"Receipts\"/>"
+msgstr "<i class=\"fa fa-paperclip\" title=\"الإيصالات\"/>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_dashboard
+msgid "<i class=\"fa fa-tag me-1\" title=\"Category\"/>"
+msgstr "<i class=\"fa fa-tag me-1\" title=\"التصنيف\"/>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_dashboard
+msgid "<i class=\"fa fa-user me-1\" title=\"Partner\"/>"
+msgstr "<i class=\"fa fa-user me-1\" title=\"الشريك\"/>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+msgid ""
+"<span class=\"badge rounded-pill text-bg-success\" invisible=\"move_type != 'in'\">Cash In</span>\n"
+"                        <span class=\"badge rounded-pill text-bg-danger\" invisible=\"move_type != 'out'\">Cash Out</span>"
+msgstr ""
+"<span class=\"badge rounded-pill text-bg-success\" invisible=\"move_type != 'in'\">إيداع نقدي</span>\n"
+"                        <span class=\"badge rounded-pill text-bg-danger\" invisible=\"move_type != 'out'\">سحب نقدي</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<span class=\"o_ecc_review_label\">Cash In</span>"
+msgstr "<span class=\"o_ecc_review_label\">الإيداعات</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<span class=\"o_ecc_review_label\">Cash Out</span>"
+msgstr "<span class=\"o_ecc_review_label\">المسحوبات</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<span class=\"o_ecc_review_label\">Counted</span>"
+msgstr "<span class=\"o_ecc_review_label\">المعدود</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<span class=\"o_ecc_review_label\">Difference</span>"
+msgstr "<span class=\"o_ecc_review_label\">الفرق</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<span class=\"o_ecc_review_label\">Expected</span>"
+msgstr "<span class=\"o_ecc_review_label\">المتوقع</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "<span class=\"o_ecc_review_label\">Opening</span>"
+msgstr "<span class=\"o_ecc_review_label\">رصيد الافتتاح</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid ""
+"<span class=\"o_stat_text\" invisible=\"move_type != 'in_invoice'\">Vendor Bill</span>\n"
+"                                <span class=\"o_stat_text\" invisible=\"move_type == 'in_invoice'\">Journal Entry</span>"
+msgstr ""
+"<span class=\"o_stat_text\" invisible=\"move_type != 'in_invoice'\">فاتورة المورد</span>\n"
+"                                <span class=\"o_stat_text\" invisible=\"move_type == 'in_invoice'\">قيد اليومية</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_form_cash_review
+msgid "<span class=\"o_stat_text\">Cash Review</span>"
+msgstr "<span class=\"o_stat_text\">مراجعة النقد</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+msgid "<span class=\"o_stat_text\">Correcting Entry</span>"
+msgstr "<span class=\"o_stat_text\">قيد التصحيح</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_form
+msgid "<span class=\"o_stat_text\">Expenses</span>"
+msgstr "<span class=\"o_stat_text\">المصروفات</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+msgid "<span class=\"o_stat_text\">Journal Entry</span>"
+msgstr "<span class=\"o_stat_text\">قيد اليومية</span>"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+msgid "<span class=\"o_stat_text\">Original Entry</span>"
+msgstr "<span class=\"o_stat_text\">القيد الأصلي</span>"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__account_id
+msgid "Account"
+msgstr "الحساب"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_category__account_id
+msgid ""
+"Account used for this category in journal entries (usually an expense "
+"account, or an income/equity account for cash in)."
+msgstr ""
+"الحساب المستخدم لهذا التصنيف في القيود (عادةً حساب مصروفات، أو حساب "
+"إيرادات/حقوق ملكية للإيداع النقدي)."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_form
+msgid "Accounting"
+msgstr "المحاسبة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_needaction
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_needaction
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_needaction
+msgid "Action Needed"
+msgstr "إجراء مطلوب"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__active
+msgid "Active"
+msgstr "نشط"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_ids
+msgid "Activities"
+msgstr "الأنشطة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_exception_decoration
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "زخرفة استثناء النشاط"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_state
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_state
+msgid "Activity State"
+msgstr "حالة النشاط"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_type_icon
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "أيقونة نوع النشاط"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid ""
+"Add a photo of the receipt or invoice. It is also attached to the journal "
+"entry / bill."
+msgstr ""
+"أضف صورة الإيصال أو الفاتورة. ستُرفق أيضاً بقيد اليومية / فاتورة المورد."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+msgid "Add notes..."
+msgstr "أضف ملاحظات..."
+
+#. module: expense_cash_control
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_express_all
+msgid "All Expenses"
+msgstr "جميع المصروفات"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.res_config_settings_view_form_cash_category
+msgid "All categories available in POS"
+msgstr "كل التصنيفات المتاحة في نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__amount
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__amount
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__amount_abs
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__amount_residual
+msgid "Amount Due"
+msgstr "المبلغ المستحق"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__amount
+msgid "Amount of the cash difference (always positive)"
+msgstr "مبلغ فرق النقد (دائماً موجب)"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid "An expense to pay later needs a purchase journal (e.g. Vendor Bills)."
+msgstr "المصروف الآجل يحتاج دفتر مشتريات (مثل فواتير الموردين)."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Anything the cashier or accountant should know..."
+msgstr "أي شيء يجب أن يعرفه الكاشير أو المحاسب..."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_search
+msgid "Archived"
+msgstr "مؤرشف"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "At POS"
+msgstr "في نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_attachment_count
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_attachment_count
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_config__cash_category_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_res_config_settings__pos_cash_category_ids
+msgid "Available Categories"
+msgstr "التصنيفات المتاحة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__available_in_pos
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_search
+msgid "Available in POS"
+msgstr "متاح في نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "بند كشف الحساب البنكي"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Bill"
+msgstr "فاتورة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__bill_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_cash_classification_mixin__bill_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__bill_id
+msgid "Bill / Invoice"
+msgstr "الفاتورة"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+#: model:ir.actions.act_window,name:expense_cash_control.action_expense_bills_to_pay
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_bills_to_pay
+msgid "Bills to Pay"
+msgstr "فواتير للدفع"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_ecc_cash_classification_mixin
+msgid "Cash Classification (category or partner)"
+msgstr "تصنيف النقد (تصنيف أو شريك)"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+msgid "Cash Difference"
+msgstr "فرق النقد"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_cash_difference_reconciliation
+msgid "Cash Difference Reconciliation"
+msgstr "تسوية فروقات النقد"
+
+#. module: expense_cash_control
+#: model:ir.actions.act_window,name:expense_cash_control.action_cash_difference_dashboard
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_difference_ids
+#: model:ir.ui.menu,name:expense_cash_control.menu_cash_difference_dashboard
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Cash Differences"
+msgstr "فروقات النقد"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__cash_direction
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_cash_classification_mixin__cash_direction
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__cash_direction
+msgid "Cash Direction"
+msgstr "اتجاه النقد"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__difference_type__gain
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+msgid "Cash Gain"
+msgstr "زيادة نقدية"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_category__pos_cash_type__in
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_cash_move__move_type__in
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Cash In"
+msgstr "إيداع نقدي"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_category__pos_cash_type__both
+msgid "Cash In & Out"
+msgstr "إيداع وسحب"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_pos_cash_move
+msgid ""
+"Cash In / Cash Out made from the POS without a category appear here every day.\n"
+"               Pick a category and click <strong>Classify</strong> to post them on the right account."
+msgstr ""
+"تظهر هنا يومياً حركات الإيداع والسحب من نقطة البيع التي لم يُحدد لها تصنيف.\n"
+"               اختر تصنيفاً واضغط <strong>تصنيف</strong> لترحيلها على الحساب الصحيح."
+
+#. module: expense_cash_control
+#: model:ir.actions.act_window,name:expense_cash_control.action_pos_cash_move
+#: model:ir.ui.menu,name:expense_cash_control.menu_pos_cash_move
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Cash In / Out"
+msgstr "الإيداع / السحب النقدي"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Cash In / Out to classify"
+msgstr "إيداع / سحب بانتظار التصنيف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_move_ids
+msgid "Cash In/Out"
+msgstr "الإيداع/السحب النقدي"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_pivot
+msgid "Cash In/Out Analysis"
+msgstr "تحليل الإيداع/السحب"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_config__use_cash_categories
+#: model:ir.model.fields,field_description:expense_cash_control.field_res_config_settings__pos_use_cash_categories
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.res_config_settings_view_form_cash_category
+msgid "Cash In/Out Categories"
+msgstr "تصنيفات الإيداع/السحب النقدي"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__journal_id
+msgid "Cash Journal"
+msgstr "دفتر النقد"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__difference_type__loss
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+msgid "Cash Loss"
+msgstr "عجز نقدي"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_to_classify_count
+msgid "Cash Moves to Classify"
+msgstr "حركات نقدية بانتظار التصنيف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_category__pos_cash_type__out
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_cash_move__move_type__out
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Cash Out"
+msgstr "سحب نقدي"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/pos_session.py:0
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_review_state
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Cash Review"
+msgstr "مراجعة النقد"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "Cash difference successfully reclassified to \"%s\"."
+msgstr "تمت إعادة تصنيف فرق النقد إلى \"%s\" بنجاح."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Cash differences to classify"
+msgstr "فروقات نقد بانتظار التصنيف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__cashier_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__user_id
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_search
+msgid "Cashier"
+msgstr "الكاشير"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.res_config_settings_view_form_cash_category
+msgid ""
+"Cashiers pick a category for every Cash In / Cash Out. Uncategorized moves "
+"wait in Expenses & Cash for review."
+msgstr ""
+"يختار الكاشير تصنيفاً لكل إيداع / سحب نقدي. الحركات غير المصنفة تنتظر "
+"المراجعة في تطبيق المصروفات والنقد."
+
+#. module: expense_cash_control
+#: model:ir.actions.act_window,name:expense_cash_control.action_expense_category
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_category
+msgid "Categories"
+msgstr "التصنيفات"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__classified_at_pos
+msgid "Categorized at POS"
+msgstr "صُنّف في نقطة البيع"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/pos/cash_move_popup.xml:0
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__category_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__category_id
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Category"
+msgstr "التصنيف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__name
+msgid "Category Name"
+msgstr "اسم التصنيف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_config__cash_category_required
+#: model:ir.model.fields,field_description:expense_cash_control.field_res_config_settings__pos_cash_category_required
+msgid "Category Required"
+msgstr "التصنيف إلزامي"
+
+#. module: expense_cash_control
+#: model:ir.model.constraint,message:expense_cash_control.constraint_expense_category_code_unique
+msgid "Category code must be unique!"
+msgstr "يجب أن يكون رمز التصنيف فريداً!"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Check counts, then mark reviewed"
+msgstr "راجع المبالغ ثم اعتمد المراجعة"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Choose a category..."
+msgstr "اختر تصنيفاً..."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Choose the partner..."
+msgstr "اختر الشريك..."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+msgid "Classification"
+msgstr "التصنيف"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__state__classified
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_cash_move__state__classified
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Classified"
+msgstr "مصنّف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__classified_by_id
+msgid "Classified By"
+msgstr "صنّفه"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__classified_date
+msgid "Classified On"
+msgstr "تاريخ التصنيف"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Classify"
+msgstr "تصنيف"
+
+#. module: expense_cash_control
+#: model:res.groups,comment:expense_cash_control.group_expense_manager
+msgid ""
+"Classify POS cash in/out and cash differences, review closed sessions, "
+"manage categories."
+msgstr ""
+"تصنيف الإيداع/السحب وفروقات النقد، مراجعة الجلسات المغلقة، وإدارة التصنيفات."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+msgid "Classify Selected"
+msgstr "تصنيف المحدد"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_search
+msgid "Closed On"
+msgstr "تاريخ الإغلاق"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Closed sessions to review"
+msgstr "جلسات مغلقة بانتظار المراجعة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__code
+msgid "Code"
+msgstr "الرمز"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Collect POS cash in/out and differences"
+msgstr "جمع الإيداع/السحب والفروقات من نقاط البيع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__color
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__category_color
+msgid "Color"
+msgstr "اللون"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__partner_commercial_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_cash_classification_mixin__partner_commercial_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__partner_commercial_id
+msgid "Commercial Partner"
+msgstr "الشريك التجاري"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__company_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__company_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__company_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_res_config_settings
+msgid "Config Settings"
+msgstr "إعدادات التهيئة"
+
+#. module: expense_cash_control
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_express_config
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "Configuration Required"
+msgstr "الإعداد مطلوب"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__correcting_move_id
+msgid "Correcting Entry"
+msgstr "قيد التصحيح"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_expense_category
+msgid "Create your first expense category"
+msgstr "أنشئ أول تصنيف للمصروفات"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__create_uid
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__create_uid
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__create_uid
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__create_date
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__create_date
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__create_date
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__currency_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__currency_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__currency_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__date
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__date
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__date
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__date
+msgid "Date of the cash difference"
+msgstr "تاريخ فرق النقد"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_search
+msgid "Day"
+msgstr "اليوم"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__name
+msgid "Description"
+msgstr "الوصف"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+msgid "Details"
+msgstr "التفاصيل"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Developed by"
+msgstr "تطوير"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_list
+msgid "Difference"
+msgstr "الفرق"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_list
+msgid "Differences"
+msgstr "الفروقات"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_cash_difference_dashboard
+msgid ""
+"Differences are collected automatically when a POS session closes.\n"
+"               You can also click <strong>Scan for Differences</strong>."
+msgstr ""
+"تُجمع الفروقات تلقائياً عند إغلاق جلسة نقطة البيع.\n"
+"               يمكنك أيضاً الضغط على <strong>البحث عن الفروقات</strong>."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_difference_pending_count
+msgid "Differences to Classify"
+msgstr "فروقات بانتظار التصنيف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__display_name
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__display_name
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__display_name
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_express__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__due_date
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_pos_session_cash_review
+msgid "Every POS session with a cash drawer appears here when it is closed."
+msgstr "تظهر هنا كل جلسة نقطة بيع بها درج نقدي عند إغلاقها."
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_expense_express
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "Expense"
+msgstr "مصروف"
+
+#. module: expense_cash_control
+#: model:ir.actions.act_window,name:expense_cash_control.action_expense_analysis
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_analysis
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_graph
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_pivot
+msgid "Expense Analysis"
+msgstr "تحليل المصروفات"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_expense_category
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__category_id
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__classification_type__category
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__ecc_cash_classification_mixin__classification_type__category
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_cash_move__classification_type__category
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_form
+msgid "Expense Category"
+msgstr "تصنيف المصروفات"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__classification_type
+#: model:ir.model.fields,help:expense_cash_control.field_ecc_cash_classification_mixin__classification_type
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__classification_type
+msgid ""
+"Expense Category: the amount is an expense / income of the business.\n"
+"Partner Payment: the money was paid to (or received from) a partner, e.g. a vendor paid from the cash drawer. It is recorded on the partner account to reconcile with the bills."
+msgstr ""
+"تصنيف مصروف: المبلغ مصروف / إيراد للنشاط.\n"
+"دفعة لشريك: المبلغ دُفع إلى (أو استُلم من) شريك، مثل مورد دُفع له من درج النقد. يُسجل على حساب الشريك لتسويته مع فواتيره."
+
+#. module: expense_cash_control
+#: model:ir.actions.act_window,name:expense_cash_control.action_expense_express
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__expense_count
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_section
+msgid "Expenses"
+msgstr "المصروفات"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_express_root
+msgid "Expenses & Cash"
+msgstr "المصروفات والنقد"
+
+#. module: expense_cash_control
+#: model:ir.module.category,name:expense_cash_control.module_category_expense_cash_control
+msgid "Expenses & Cash Control"
+msgstr "المصروفات ومراقبة النقد"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_expense_cash_dashboard
+msgid "Expenses & Cash Control Dashboard"
+msgstr "لوحة المصروفات ومراقبة النقد"
+
+#. module: expense_cash_control
+#: model:ir.actions.server,name:expense_cash_control.ir_cron_sync_pos_cash_ir_actions_server
+msgid "Expenses & Cash: collect POS cash in/out and differences"
+msgstr "المصروفات والنقد: جمع الإيداع/السحب والفروقات من نقاط البيع"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_expense_bills_to_pay
+msgid ""
+"Expenses recorded as \"To Pay Later\" appear here until their bill is paid."
+msgstr "المصروفات المسجلة \"للدفع لاحقاً\" تظهر هنا حتى تُدفع فاتورتها."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_follower_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_follower_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_follower_ids
+msgid "Followers"
+msgstr "المتابعون"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_partner_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_partner_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "المتابعون (الشركاء)"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__activity_type_icon
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "أيقونة Font Awesome مثل fa-tasks"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "Found: %s. Ready for classification."
+msgstr "تم العثور على: %s. جاهزة للتصنيف."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__classification_type
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_cash_classification_mixin__classification_type
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__classification_type
+msgid "Goes To"
+msgstr "يذهب إلى"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_search
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__has_message
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__has_message
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__has_message
+msgid "Has Message"
+msgstr "يحتوي على رسالة"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Has receipt"
+msgstr "يوجد إيصال"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__id
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__id
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__id
+msgid "ID"
+msgstr "المعرف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_exception_icon
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_exception_icon
+msgid "Icon"
+msgstr "الأيقونة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__activity_exception_icon
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "الأيقونة للإشارة إلى نشاط استثنائي."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__message_needaction
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__message_needaction
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "إذا كان محدداً، فهناك رسائل جديدة تحتاج لرؤيتها."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__message_has_error
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__message_has_sms_error
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__message_has_error
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__message_has_sms_error
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__message_has_error
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "إذا كان محدداً، فقد حدث خطأ في تسليم بعض الرسائل."
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_express__payment_state__in_payment
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "In Payment"
+msgstr "قيد الدفع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__category_id
+msgid ""
+"In the POS only the categories of the right direction are offered; here any "
+"category can be used."
+msgstr ""
+"في نقطة البيع تظهر فقط تصنيفات الاتجاه الصحيح؛ هنا يمكن استخدام أي تصنيف."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_is_follower
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_is_follower
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_is_follower
+msgid "Is Follower"
+msgstr "متابع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__is_locked
+msgid "Is Locked"
+msgstr "مقفل"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__is_overdue
+msgid "Is Overdue"
+msgstr "متأخر"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__journal_id
+msgid "Journal"
+msgstr "دفتر اليومية"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+#: code:addons/expense_cash_control/models/pos_cash_move.py:0
+#: model:ir.model,name:expense_cash_control.model_account_move
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__move_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__account_move_id
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Last Month"
+msgstr "الشهر الماضي"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__write_uid
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__write_uid
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__write_uid
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__write_date
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__write_date
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__write_date
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_category__company_id
+msgid "Leave empty to share this category between companies."
+msgstr "اتركه فارغاً لمشاركة هذا التصنيف بين الشركات."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_pos_config__use_cash_categories
+#: model:ir.model.fields,help:expense_cash_control.field_res_config_settings__pos_use_cash_categories
+msgid ""
+"Let the cashier pick a category in the Cash In / Cash Out popup. The move is"
+" posted directly on the category account."
+msgstr ""
+"يسمح للكاشير باختيار تصنيف في نافذة الإيداع / السحب النقدي، وتُرحّل الحركة "
+"مباشرة على حساب التصنيف."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_pos_config__cash_category_ids
+#: model:ir.model.fields,help:expense_cash_control.field_res_config_settings__pos_cash_category_ids
+msgid ""
+"Limit categories available in this POS. Leave empty for all POS categories."
+msgstr ""
+"حدد التصنيفات المتاحة في نقطة البيع هذه. اتركه فارغاً لعرض كل تصنيفات نقطة "
+"البيع."
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_expense_category
+msgid ""
+"Link every category to an account. Mark it \"Available in POS\" to let "
+"cashiers use it for Cash In / Cash Out."
+msgstr ""
+"اربط كل تصنيف بحساب. فعّل \"متاح في نقطة البيع\" ليستخدمه الكاشير في الإيداع"
+" / السحب النقدي."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Loading"
+msgstr "جارٍ التحميل"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Loss"
+msgstr "العجز"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.res_config_settings_view_form_cash_category
+msgid "Manage Categories"
+msgstr "إدارة التصنيفات"
+
+#. module: expense_cash_control
+#: model:res.groups,name:expense_cash_control.group_expense_manager
+msgid "Manager"
+msgstr "مدير"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Mark as Reviewed"
+msgstr "اعتماد المراجعة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_has_error
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_has_error
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_has_error
+msgid "Message Delivery error"
+msgstr "خطأ في تسليم الرسائل"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_ids
+msgid "Messages"
+msgstr "الرسائل"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Missing Receipt"
+msgstr "بدون إيصال"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__cash_direction__in
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__ecc_cash_classification_mixin__cash_direction__in
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_cash_move__cash_direction__in
+msgid "Money In"
+msgstr "نقد داخل"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__cash_direction__out
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__ecc_cash_classification_mixin__cash_direction__out
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_cash_move__cash_direction__out
+msgid "Money Out"
+msgstr "نقد خارج"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Month"
+msgstr "الشهر"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__my_activity_date_deadline
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "موعد نشاطي النهائي"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Net"
+msgstr "الصافي"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "New"
+msgstr "جديد"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.js:0
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "New Bill to Pay"
+msgstr "فاتورة جديدة للدفع"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.js:0
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "New Expense"
+msgstr "مصروف جديد"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_date_deadline
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "الموعد النهائي للنشاط التالي"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_summary
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_summary
+msgid "Next Activity Summary"
+msgstr "ملخص النشاط التالي"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_type_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_type_id
+msgid "Next Activity Type"
+msgstr "نوع النشاط التالي"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_cash_difference_dashboard
+msgid "No cash differences to process"
+msgstr "لا توجد فروقات نقد للمعالجة"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_pos_cash_move
+msgid "No cash in/out waiting"
+msgstr "لا توجد حركات إيداع/سحب بالانتظار"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "No cash journals found. Please configure a cash journal first."
+msgstr "لم يتم العثور على دفاتر نقد. الرجاء إعداد دفتر نقد أولاً."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/pos/cash_move_popup.xml:0
+msgid "No category for this type of move."
+msgstr "لا يوجد تصنيف لهذا النوع من الحركات."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "No correcting entry has been created yet."
+msgstr "لم يتم إنشاء قيد تصحيح بعد."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "No expenses this month yet."
+msgstr "لا توجد مصروفات هذا الشهر بعد."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid ""
+"No loss/profit accounts configured on cash journals. Please configure them "
+"first."
+msgstr "لا توجد حسابات عجز/زيادة في دفاتر النقد. الرجاء إعدادها أولاً."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "No new cash differences found. All entries are up to date."
+msgstr "لا توجد فروقات نقد جديدة. كل القيود محدثة."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/pos_cash_move.py:0
+msgid "No new cash in/out found. Everything is up to date."
+msgstr "لا توجد حركات إيداع/سحب جديدة. كل شيء محدث."
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_pos_session_cash_review
+msgid "No session waiting for review"
+msgstr "لا توجد جلسات بانتظار المراجعة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_express__payment_state__not_paid
+msgid "Not Paid"
+msgstr "غير مدفوع"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/pos/cash_move_popup.xml:0
+msgid "Note (optional)"
+msgstr "ملاحظة (اختياري)"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__notes
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__notes
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__notes
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+msgid "Notes..."
+msgstr "ملاحظات..."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Nothing recorded yet. Click"
+msgstr "لم يُسجل شيء بعد. اضغط"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_expense_bills_to_pay
+msgid "Nothing waiting for payment"
+msgstr "لا شيء بانتظار الدفع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_needaction_counter
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_needaction_counter
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_needaction_counter
+msgid "Number of Actions"
+msgstr "عدد الإجراءات"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_has_error_counter
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_has_error_counter
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_has_error_counter
+msgid "Number of errors"
+msgstr "عدد الأخطاء"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__message_needaction_counter
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__message_needaction_counter
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "عدد الرسائل التي تتطلب إجراء"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__message_has_error_counter
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__message_has_error_counter
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "عدد الرسائل الحادث بها خطأ في التسليم"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid "Only expenses to pay later have a bill to pay."
+msgstr "فقط المصروفات الآجلة لها فاتورة للدفع."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid "Operation not supported"
+msgstr "العملية غير مدعومة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__notes
+msgid "Optional notes about this cash difference"
+msgstr "ملاحظات اختيارية حول فرق النقد"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "Optional notes..."
+msgstr "ملاحظات اختيارية..."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__bill_id
+#: model:ir.model.fields,help:expense_cash_control.field_ecc_cash_classification_mixin__bill_id
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__bill_id
+msgid ""
+"Optional: reconcile right away with this open bill. Leave empty to reconcile"
+" later from the bill (it shows as an outstanding payment)."
+msgstr ""
+"اختياري: تسوية فورية مع هذه الفاتورة المفتوحة. اتركه فارغاً للتسوية لاحقاً "
+"من الفاتورة (يظهر كدفعة معلقة)."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+msgid "Optional: reconcile with this bill now"
+msgstr "اختياري: سوِّ مع هذه الفاتورة الآن"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__original_account_id
+msgid "Original Account"
+msgstr "الحساب الأصلي"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__original_move_id
+msgid "Original Entry"
+msgstr "القيد الأصلي"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__original_move_line_id
+msgid "Original Line"
+msgstr "البند الأصلي"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Out"
+msgstr "سحب"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_kanban
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Overdue"
+msgstr "متأخر"
+
+#. module: expense_cash_control
+#: model:ir.actions.client,name:expense_cash_control.action_expense_cash_dashboard
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_dashboard
+msgid "Overview"
+msgstr "نظرة عامة"
+
+#. module: expense_cash_control
+#: model:ir.ui.menu,name:expense_cash_control.menu_cash_difference_parent
+msgid "POS Cash"
+msgstr "نقد نقاط البيع"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "POS Cash Control"
+msgstr "مراقبة نقد نقاط البيع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__pos_cash_type
+msgid "POS Cash Direction"
+msgstr "اتجاه الحركة في نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_pos_cash_move
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+msgid "POS Cash In/Out"
+msgstr "إيداع/سحب نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__session_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__session_id
+msgid "POS Session"
+msgstr "جلسة نقطة البيع"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "POS cash"
+msgstr "نقد نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_express__payment_state__paid
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "Paid"
+msgstr "مدفوع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_express__payment_mode__paid
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Paid Now"
+msgstr "مدفوع الآن"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__payment_mode
+msgid ""
+"Paid Now: the money already left the cash box or bank account.\n"
+"To Pay Later: records a vendor bill that waits for payment."
+msgstr ""
+"مدفوع الآن: خرج المبلغ فعلاً من الصندوق أو الحساب البنكي.\n"
+"للدفع لاحقاً: يسجل فاتورة مورد تنتظر الدفع."
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_expense_express
+msgid ""
+"Paid now from the cash box or bank, or to pay later as a vendor bill. Attach"
+" the receipt photo."
+msgstr ""
+"مدفوع الآن من الصندوق أو البنك، أو للدفع لاحقاً كفاتورة مورد. أرفق صورة "
+"الإيصال."
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_express__payment_state__partial
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "Partially Paid"
+msgstr "مدفوع جزئياً"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__partner_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_cash_classification_mixin__partner_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__partner_id
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Partner"
+msgstr "الشريك"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__partner_account_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_cash_classification_mixin__partner_account_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__partner_account_id
+msgid "Partner Account"
+msgstr "حساب الشريك"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__classification_type__partner
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__ecc_cash_classification_mixin__classification_type__partner
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_cash_move__classification_type__partner
+msgid "Partner Payment"
+msgstr "دفعة لشريك"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Partner Payments"
+msgstr "دفعات الشركاء"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__partner_account_id
+#: model:ir.model.fields,help:expense_cash_control.field_ecc_cash_classification_mixin__partner_account_id
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__partner_account_id
+msgid ""
+"Payable account for money paid out, receivable account for money received."
+msgstr "حساب الدائنين للمبالغ المدفوعة، وحساب المدينين للمبالغ المستلمة."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__payment_mode
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Payment"
+msgstr "الدفع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__payment_state
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Payment Status"
+msgstr "حالة الدفع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__state__pending
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+msgid "Pending"
+msgstr "معلّق"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__attachment_ids
+msgid "Photos of receipts, invoices or any supporting document."
+msgstr "صور الإيصالات والفواتير أو أي مستند داعم."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_classification_mixin.py:0
+msgid "Please choose a category for \"%s\" first."
+msgstr "الرجاء اختيار تصنيف لـ \"%s\" أولاً."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_classification_mixin.py:0
+msgid "Please choose the partner for \"%s\"."
+msgstr "الرجاء اختيار الشريك لـ \"%s\"."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid "Please configure a default account on journal \"%s\""
+msgstr "الرجاء تحديد حساب افتراضي لدفتر اليومية \"%s\""
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid ""
+"Please select the vendor for \"%s\": an expense to pay later is recorded as "
+"a vendor bill."
+msgstr "الرجاء اختيار المورد لـ \"%s\": المصروف الآجل يُسجل كفاتورة مورد."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid "Please set an expense account on category \"%s\""
+msgstr "الرجاء تحديد حساب مصروفات للتصنيف \"%s\""
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__config_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__config_id
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_search
+msgid "Point of Sale"
+msgstr "نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "تهيئة نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_pos_session
+msgid "Point of Sale Session"
+msgstr "جلسة نقطة البيع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__amount
+msgid "Positive for cash in, negative for cash out"
+msgstr "موجب للإيداع وسالب للسحب"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "Post"
+msgstr "ترحيل"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_express__state__posted
+msgid "Posted"
+msgstr "مرحّل"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/pos/cash_move_popup.xml:0
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__name
+msgid "Reason"
+msgstr "السبب"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__attachment_count
+msgid "Receipt Count"
+msgstr "عدد الإيصالات"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__attachment_ids
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_list
+msgid "Receipts"
+msgstr "الإيصالات"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Recent expenses"
+msgstr "أحدث المصروفات"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "Reclassification of %s"
+msgstr "إعادة تصنيف %s"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "Reclassify cash gain: %s"
+msgstr "إعادة تصنيف زيادة نقدية: %s"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+msgid "Reclassify cash loss: %s"
+msgstr "إعادة تصنيف عجز نقدي: %s"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Reconcile later"
+msgstr "تسوية لاحقاً"
+
+#. module: expense_cash_control
+#: model:res.groups,comment:expense_cash_control.group_expense_user
+msgid "Record expenses and bills, attach receipts."
+msgstr "تسجيل المصروفات والفواتير وإرفاق الإيصالات."
+
+#. module: expense_cash_control
+#: model:ir.module.category,description:expense_cash_control.module_category_expense_cash_control
+msgid "Record expenses and control POS cash"
+msgstr "تسجيل المصروفات ومراقبة نقد نقاط البيع"
+
+#. module: expense_cash_control
+#: model_terms:ir.actions.act_window,help:expense_cash_control.action_expense_express
+msgid "Record your first expense!"
+msgstr "سجّل أول مصروف!"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__user_id
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Recorded By"
+msgstr "سجّله"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__name
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Refresh"
+msgstr "تحديث"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "Register Payment"
+msgstr "تسجيل دفعة"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Reopen Review"
+msgstr "إعادة فتح المراجعة"
+
+#. module: expense_cash_control
+#: model:ir.ui.menu,name:expense_cash_control.menu_expense_reporting
+msgid "Reporting"
+msgstr "التقارير"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__partner_id
+msgid "Required for expenses to pay later (vendor bill)."
+msgstr "مطلوب للمصروفات الآجلة (فاتورة مورد)."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/pos_cash_move.py:0
+msgid "Reset the cash move to \"To Classify\" before changing where it goes."
+msgstr "أعد الحركة النقدية إلى \"بانتظار التصنيف\" قبل تغيير وجهتها."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+msgid "Reset to Classify"
+msgstr "إعادة إلى بانتظار التصنيف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__activity_user_id
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__activity_user_id
+msgid "Responsible User"
+msgstr "المستخدم المسؤول"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_review_note
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Review Notes"
+msgstr "ملاحظات المراجعة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_session__cash_review_state__reviewed
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_search
+msgid "Reviewed"
+msgstr "تمت المراجعة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_reviewed_by_id
+msgid "Reviewed By"
+msgstr "راجعه"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_reviewed_date
+msgid "Reviewed On"
+msgstr "تاريخ المراجعة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__message_has_sms_error
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__message_has_sms_error
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "خطأ في تسليم الرسائل النصية"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_difference_reconciliation.py:0
+#: code:addons/expense_cash_control/models/pos_cash_move.py:0
+msgid "Scan Complete"
+msgstr "اكتمل الفحص"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+msgid "Scan Now"
+msgstr "افحص الآن"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Scan POS"
+msgstr "فحص نقاط البيع"
+
+#. module: expense_cash_control
+#: model:ir.actions.server,name:expense_cash_control.action_scan_cash_differences
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_dashboard
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_list
+msgid "Scan for Differences"
+msgstr "البحث عن الفروقات"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Search Expenses"
+msgstr "بحث في المصروفات"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "See all"
+msgstr "عرض الكل"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__category_id
+msgid "Select a category to reclassify this cash difference"
+msgstr "اختر تصنيفاً لإعادة تصنيف فرق النقد"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+msgid "Select expense category..."
+msgstr "اختر تصنيف المصروف..."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/pos/cash_move_popup.xml:0
+msgid "Selected"
+msgstr "محدد"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__sequence
+msgid "Sequence"
+msgstr "التسلسل"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Session"
+msgstr "الجلسة"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/pos_session.py:0
+msgid ""
+"Session %(session)s still has %(moves)s cash in/out and %(diffs)s cash "
+"difference(s) to classify."
+msgstr ""
+"الجلسة %(session)s ما زال بها %(moves)s حركة إيداع/سحب و%(diffs)s فرق نقد "
+"بانتظار التصنيف."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/pos_session.py:0
+msgid "Session %s is not closed yet."
+msgstr "الجلسة %s لم تُغلق بعد."
+
+#. module: expense_cash_control
+#: model:ir.actions.act_window,name:expense_cash_control.action_pos_session_cash_review
+#: model:ir.ui.menu,name:expense_cash_control.menu_pos_session_cash_review
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_list
+msgid "Session Reviews"
+msgstr "مراجعة الجلسات"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_pos_session__cash_review_state
+msgid "Set to \"To Review\" when the session is closed."
+msgstr "تصبح \"بانتظار المراجعة\" عند إغلاق الجلسة."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_category__available_in_pos
+msgid "Show this category in the POS Cash In / Cash Out popup."
+msgstr "إظهار هذا التصنيف في نافذة الإيداع / السحب النقدي في نقطة البيع."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__amount
+msgid "Signed Amount"
+msgstr "المبلغ بالإشارة"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+msgid "Source"
+msgstr "المصدر"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Spent Today"
+msgstr "مصروف اليوم"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__statement_line_id
+msgid "Statement Line"
+msgstr "بند الكشف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__state
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__state
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__state
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+msgid "Status"
+msgstr "الحالة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__activity_state
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"الحالة على أساس الأنشطة\n"
+"متأخر: تاريخ الاستحقاق مر\n"
+"اليوم: تاريخ النشاط هو اليوم\n"
+"مخطط: الأنشطة المستقبلية."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__session_id
+msgid "The POS session closed with this difference"
+msgstr "جلسة نقطة البيع التي أُغلقت بهذا الفرق"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid "The amount of an expense must be greater than zero."
+msgstr "يجب أن يكون مبلغ المصروف أكبر من صفر."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_classification_mixin.py:0
+msgid "The bill %(bill)s has nothing left to pay on account %(account)s."
+msgstr "الفاتورة %(bill)s لم يتبقَّ عليها شيء للدفع على الحساب %(account)s."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__is_locked
+msgid "The bill already has a payment: the expense can no longer be changed."
+msgstr "الفاتورة عليها دفعة: لم يعد بالإمكان تعديل المصروف."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid ""
+"The bill of \"%s\" already has a payment. Unreconcile the payment on the "
+"bill first, then edit the expense."
+msgstr ""
+"فاتورة \"%s\" عليها دفعة. ألغِ تسوية الدفعة على الفاتورة أولاً ثم عدّل "
+"المصروف."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/pos_session.py:0
+msgid "The cash category \"%s\" has no account."
+msgstr "تصنيف النقد \"%s\" ليس له حساب."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_pos_config__cash_category_required
+#: model:ir.model.fields,help:expense_cash_control.field_res_config_settings__pos_cash_category_required
+msgid ""
+"The cashier must pick a category. Otherwise uncategorized moves go to the "
+"back office review."
+msgstr ""
+"يجب على الكاشير اختيار تصنيف. وإلا تذهب الحركات غير المصنفة إلى مراجعة "
+"الإدارة."
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_classification_mixin.py:0
+msgid "The category \"%s\" has no account."
+msgstr "التصنيف \"%s\" ليس له حساب."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+msgid "The correcting entry will be cancelled. Continue?"
+msgstr "سيتم إلغاء قيد التصحيح. هل تريد المتابعة؟"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__correcting_move_id
+msgid "The journal entry created to reclassify this difference"
+msgstr "القيد المُنشأ لإعادة تصنيف هذا الفرق"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__original_account_id
+msgid "The loss/gain account where the difference was originally posted"
+msgstr "حساب العجز/الزيادة الذي رُحّل عليه الفرق أصلاً"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__original_move_id
+msgid "The original POS cash difference journal entry"
+msgstr "قيد فرق النقد الأصلي من نقطة البيع"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/cash_classification_mixin.py:0
+msgid "The partner \"%s\" has no payable/receivable account."
+msgstr "الشريك \"%s\" ليس له حساب دائنين/مدينين."
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__original_move_line_id
+msgid "The specific journal entry line with the cash difference"
+msgstr "بند القيد الذي يحتوي على فرق النقد"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "This Month"
+msgstr "هذا الشهر"
+
+#. module: expense_cash_control
+#: model:ir.model.constraint,message:expense_cash_control.constraint_pos_cash_move_statement_line_unique
+msgid "This cash move is already tracked."
+msgstr "هذه الحركة النقدية مسجلة مسبقاً."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "This month"
+msgstr "هذا الشهر"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_cash_move__state__to_classify
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_list
+msgid "To Classify"
+msgstr "بانتظار التصنيف"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__expense_express__payment_mode__to_pay
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "To Pay Later"
+msgstr "للدفع لاحقاً"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__pos_session__cash_review_state__to_review
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_search
+msgid "To Review"
+msgstr "بانتظار المراجعة"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "To pay"
+msgstr "للدفع"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Today"
+msgstr "اليوم"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_list
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_in_total
+msgid "Total Cash In"
+msgstr "إجمالي الإيداعات"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__cash_out_total
+msgid "Total Cash Out"
+msgstr "إجمالي المسحوبات"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_list
+msgid "Total Due"
+msgstr "إجمالي المستحق"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_category__expense_total
+msgid "Total Expenses"
+msgstr "إجمالي المصروفات"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Trend"
+msgstr "الاتجاه"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__difference_type
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__move_type
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__move_type
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+msgid "Type"
+msgstr "النوع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__activity_exception_decoration
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "نوع النشاط الاستثنائي في السجل."
+
+#. module: expense_cash_control
+#: model:res.groups,name:expense_cash_control.group_expense_user
+msgid "User"
+msgstr "مستخدم"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__partner_id
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Vendor"
+msgstr "المورد"
+
+#. module: expense_cash_control
+#. odoo-python
+#: code:addons/expense_cash_control/models/expense_express.py:0
+msgid "Vendor Bill"
+msgstr "فاتورة المورد"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "Waiting for Payment"
+msgstr "بانتظار الدفع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__website_message_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__website_message_ids
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__website_message_ids
+msgid "Website Messages"
+msgstr "رسائل الموقع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__website_message_ids
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__website_message_ids
+#: model:ir.model.fields,help:expense_cash_control.field_pos_cash_move__website_message_ids
+msgid "Website communication history"
+msgstr "سجل تواصل الموقع"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "What kind of expense?"
+msgstr "ما نوع المصروف؟"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__name
+msgid "What was this expense for?"
+msgstr "ما سبب هذا المصروف؟"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_express__due_date
+msgid "When the bill should be paid."
+msgstr "موعد دفع الفاتورة."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Where the money went"
+msgstr "أين ذهبت الأموال"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_cash_difference_reconciliation__difference_type
+msgid "Whether this is a cash shortage (loss) or overage (gain)"
+msgstr "هل هو عجز نقدي أم زيادة نقدية"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,help:expense_cash_control.field_expense_category__pos_cash_type
+msgid "Which POS cash moves can use this category."
+msgstr "حركات نقطة البيع التي يمكنها استخدام هذا التصنيف."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "Who do you owe?"
+msgstr "لمن المبلغ المستحق؟"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_form
+msgid "Who received / gave the money?"
+msgstr "من استلم / أعطى المبلغ؟"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_form
+msgid "Who took / gave the money?"
+msgstr "من أخذ / أعطى المبلغ؟"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
+msgid "With Receipt"
+msgstr "بإيصال"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "Yousif Shakir"
+msgstr "يوسف شاكر"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "bill(s)"
+msgstr "فاتورة"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "cash in/out and"
+msgstr "حركة إيداع/سحب و"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "difference(s) still need a category."
+msgstr "فرق ما زالت تحتاج إلى تصنيف."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "donialink.com"
+msgstr "donialink.com"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_form
+msgid "e.g. VEG"
+msgstr "مثال: VEG"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_category_form
+msgid "e.g. Vegetables & Produce"
+msgstr "مثال: خضروات وفواكه"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_form
+msgid "e.g. Vegetables from market"
+msgstr "مثال: خضروات من السوق"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "expense(s)"
+msgstr "مصروف"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "overdue"
+msgstr "متأخرة"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "session(s) open now"
+msgstr "جلسة مفتوحة الآن"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "to start."
+msgstr "للبدء."
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "· Gain"
+msgstr "· الزيادة"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "· In"
+msgstr "· الإيداع"
+
+#. module: expense_cash_control
+#. odoo-javascript
+#: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+msgid "· Your money at a glance"
+msgstr "· أموالك في لمحة"

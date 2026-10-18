@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="expense_cash_control.Dashboard">
+        <div class="o_action o_ecc_dashboard h-100 overflow-auto">
+            <div t-if="!state.data" class="d-flex justify-content-center align-items-center h-100">
+                <i class="fa fa-circle-o-notch fa-spin fa-2x text-muted" title="Loading"/>
+            </div>
+            <t t-set="d" t-value="state.data"/>
+            <div t-if="d" class="o_ecc_container">
+
+                <!-- Header -->
+                <header class="o_ecc_header">
+                    <div>
+                        <h1 class="o_ecc_title">Expenses &amp; Cash</h1>
+                        <p class="o_ecc_subtitle"><t t-esc="d.company"/> · Your money at a glance</p>
+                    </div>
+                    <div class="o_ecc_header_actions">
+                        <button class="btn btn-primary o_ecc_btn" t-on-click="() => this.newExpense('paid')">
+                            <i class="fa fa-plus me-2" title="New"/>New Expense
+                        </button>
+                        <button class="btn btn-outline-primary o_ecc_btn" t-on-click="() => this.newExpense('to_pay')">
+                            <i class="fa fa-file-text-o me-2" title="Bill"/>New Bill to Pay
+                        </button>
+                        <button t-if="d.is_manager" class="btn btn-light o_ecc_btn" t-on-click="scanPos"
+                                title="Collect POS cash in/out and differences">
+                            <i class="fa fa-refresh" title="Scan POS"/>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Expense KPIs -->
+                <section class="o_ecc_grid o_ecc_grid_3">
+                    <button class="o_ecc_kpi" t-on-click="() => this.openExpenses({search_default_filter_today: 1})">
+                        <span class="o_ecc_kpi_icon o_ecc_tone_blue"><i class="fa fa-sun-o" title="Today"/></span>
+                        <span class="o_ecc_kpi_label">Spent Today</span>
+                        <span class="o_ecc_kpi_value" t-esc="d.today.amount_fmt"/>
+                        <span class="o_ecc_kpi_hint"><t t-esc="d.today.count"/> expense(s)</span>
+                    </button>
+                    <button class="o_ecc_kpi" t-on-click="() => this.openExpenses({search_default_filter_this_month: 1})">
+                        <span class="o_ecc_kpi_icon o_ecc_tone_purple"><i class="fa fa-calendar" title="Month"/></span>
+                        <span class="o_ecc_kpi_label">This Month</span>
+                        <span class="o_ecc_kpi_value" t-esc="d.month.amount_fmt"/>
+                        <span class="o_ecc_kpi_hint">
+                            <t t-esc="d.month.count"/> expense(s)
+                            <span t-if="d.month_trend !== null" t-attf-class="o_ecc_trend {{trendClass}}">
+                                <i t-attf-class="fa {{d.month_trend > 0 ? 'fa-arrow-up' : 'fa-arrow-down'}}" title="Trend"/>
+                                <t t-esc="Math.abs(d.month_trend)"/>% vs last month
+                            </span>
+                        </span>
+                    </button>
+                    <button class="o_ecc_kpi" t-on-click="() => this.open('expense_cash_control.action_expense_bills_to_pay')">
+                        <span class="o_ecc_kpi_icon o_ecc_tone_orange"><i class="fa fa-hourglass-half" title="To pay"/></span>
+                        <span class="o_ecc_kpi_label">Bills to Pay</span>
+                        <span class="o_ecc_kpi_value" t-esc="d.unpaid.amount_fmt"/>
+                        <span class="o_ecc_kpi_hint">
+                            <t t-esc="d.unpaid.count"/> bill(s)
+                            <span t-if="d.overdue_count" class="badge rounded-pill text-bg-danger ms-1"><t t-esc="d.overdue_count"/> overdue</span>
+                        </span>
+                    </button>
+                </section>
+
+                <!-- POS cash control -->
+                <section t-if="d.is_manager" class="o_ecc_panel">
+                    <div class="o_ecc_panel_head">
+                        <h2><i class="fa fa-money me-2" title="POS cash"/>POS Cash Control</h2>
+                        <span class="text-muted small"><t t-esc="d.open_sessions"/> session(s) open now</span>
+                    </div>
+                    <div class="o_ecc_grid o_ecc_grid_3">
+                        <button t-attf-class="o_ecc_tile {{d.to_classify_count ? 'o_ecc_tile_alert' : 'o_ecc_tile_ok'}}"
+                                t-on-click="() => this.open('expense_cash_control.action_pos_cash_move')">
+                            <span class="o_ecc_tile_count" t-esc="d.to_classify_count"/>
+                            <span class="o_ecc_tile_label">Cash In / Out to classify</span>
+                            <span class="o_ecc_tile_hint">Out <t t-esc="d.cash_out.amount_fmt"/> · In <t t-esc="d.cash_in.amount_fmt"/></span>
+                        </button>
+                        <button t-attf-class="o_ecc_tile {{d.differences_count ? 'o_ecc_tile_alert' : 'o_ecc_tile_ok'}}"
+                                t-on-click="() => this.open('expense_cash_control.action_cash_difference_dashboard')">
+                            <span class="o_ecc_tile_count" t-esc="d.differences_count"/>
+                            <span class="o_ecc_tile_label">Cash differences to classify</span>
+                            <span class="o_ecc_tile_hint">Loss <t t-esc="d.losses.amount_fmt"/> · Gain <t t-esc="d.gains.amount_fmt"/></span>
+                        </button>
+                        <button t-attf-class="o_ecc_tile {{d.sessions_to_review ? 'o_ecc_tile_alert' : 'o_ecc_tile_ok'}}"
+                                t-on-click="() => this.open('expense_cash_control.action_pos_session_cash_review')">
+                            <span class="o_ecc_tile_count" t-esc="d.sessions_to_review"/>
+                            <span class="o_ecc_tile_label">Closed sessions to review</span>
+                            <span class="o_ecc_tile_hint">Check counts, then mark reviewed</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Breakdown + recent -->
+                <section class="o_ecc_grid o_ecc_grid_2">
+                    <div class="o_ecc_panel">
+                        <div class="o_ecc_panel_head">
+                            <h2>Where the money went</h2>
+                            <span class="text-muted small">This month</span>
+                        </div>
+                        <div t-if="!d.top_categories.length" class="o_ecc_empty">No expenses this month yet.</div>
+                        <button t-foreach="d.top_categories" t-as="cat" t-key="cat.id"
+                                class="o_ecc_bar_row" t-on-click="() => this.openCategory(cat.id)">
+                            <span class="o_ecc_bar_name" t-esc="cat.name"/>
+                            <span class="o_ecc_bar_track">
+                                <span t-attf-class="o_ecc_bar_fill o_ecc_color_{{cat.color or 0}}"
+                                      t-attf-style="width: {{Math.max(cat.percent, 2)}}%"/>
+                            </span>
+                            <span class="o_ecc_bar_value" t-esc="cat.amount_fmt"/>
+                        </button>
+                    </div>
+                    <div class="o_ecc_panel">
+                        <div class="o_ecc_panel_head">
+                            <h2>Recent expenses</h2>
+                            <button class="btn btn-link btn-sm p-0" t-on-click="() => this.openExpenses({})">See all</button>
+                        </div>
+                        <div t-if="!d.recent_expenses.length" class="o_ecc_empty">
+                            Nothing recorded yet. Click <strong>New Expense</strong> to start.
+                        </div>
+                        <button t-foreach="d.recent_expenses" t-as="exp" t-key="exp.id"
+                                class="o_ecc_recent_row" t-on-click="() => this.openExpense(exp.id)">
+                            <span class="o_ecc_recent_main">
+                                <span class="o_ecc_recent_name">
+                                    <t t-esc="exp.name"/>
+                                    <i t-if="exp.has_attachment" class="fa fa-paperclip ms-1 text-muted" title="Has receipt"/>
+                                </span>
+                                <span class="o_ecc_recent_meta"><t t-esc="exp.date"/> · <t t-esc="exp.category"/></span>
+                            </span>
+                            <span class="o_ecc_recent_side">
+                                <span class="o_ecc_recent_amount" t-esc="exp.amount_fmt"/>
+                                <span t-if="exp.payment_mode === 'to_pay' and exp.payment_state !== 'paid'"
+                                      class="badge rounded-pill text-bg-warning">To pay</span>
+                            </span>
+                        </button>
+                    </div>
+                </section>
+
+                <footer class="o_ecc_credit">
+                    Developed by <strong>Yousif Shakir</strong> ·
+                    <a href="https://www.donialink.com" target="_blank" rel="noopener">donialink.com</a>
+                </footer>
+            </div>
+        </div>
+    </t>
+
+</templates>

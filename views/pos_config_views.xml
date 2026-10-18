@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_cash_category" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.expense.cash.control</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='pos_accounting_section']" position="inside">
+                <setting string="Cash In/Out Categories"
+                         help="Cashiers pick a category for every Cash In / Cash Out. Uncategorized moves wait in Expenses &amp; Cash for review.">
+                    <field name="pos_use_cash_categories"/>
+                    <div class="content-group mt-2" invisible="not pos_use_cash_categories">
+                        <div class="d-flex align-items-center gap-2">
+                            <field name="pos_cash_category_required" class="w-auto"/>
+                            <label for="pos_cash_category_required" class="o_light_label mb-0"/>
+                        </div>
+                        <div class="mt-2">
+                            <label for="pos_cash_category_ids" class="o_light_label d-block"/>
+                            <field name="pos_cash_category_ids" widget="many2many_tags"
+                                   placeholder="All categories available in POS"/>
+                        </div>
+                        <div class="mt-2">
+                            <button name="%(expense_cash_control.action_expense_category)d" type="action"
+                                    string="Manage Categories" icon="oi-arrow-right" class="btn-link"/>
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
