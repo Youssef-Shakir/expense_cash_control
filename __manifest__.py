@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Expenses & Cash Control',
-    'version': '18.0.2.0.0',
+    'version': '18.0.2.1.0',
     'category': 'Accounting/Expenses',
     'summary': 'Record expenses and bills, categorize POS cash in/out, reconcile cash differences and review closed sessions',
     'description': """

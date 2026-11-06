@@ -57,12 +57,42 @@
                         </div>
                     </div>
 
+                    <div class="o_ecc_review_cards" invisible="not has_card_methods">
+                        <div class="o_ecc_review_card">
+                            <span class="o_ecc_review_label">Card Expected</span>
+                            <field name="card_expected_total" class="o_ecc_review_value"/>
+                        </div>
+                        <div class="o_ecc_review_card">
+                            <span class="o_ecc_review_label">Card Counted</span>
+                            <field name="card_counted_total" class="o_ecc_review_value"/>
+                        </div>
+                        <div class="o_ecc_review_card o_ecc_tone_diff">
+                            <span class="o_ecc_review_label">Card Difference</span>
+                            <field name="card_difference" class="o_ecc_review_value"/>
+                        </div>
+                        <div class="o_ecc_review_card o_ecc_tone_diff">
+                            <span class="o_ecc_review_label">Net Difference (Cash + Card)</span>
+                            <field name="total_difference" class="o_ecc_review_value"/>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info d-flex align-items-center gap-2" role="status"
+                         invisible="not differences_offset">
+                        <i class="fa fa-exchange" title="Cash and card"/>
+                        <span>
+                            The cash and card differences go in opposite directions (net
+                            <field name="total_difference" class="fw-bold"/>): an order paid in cash was
+                            probably registered as card, or the opposite. Classify both to the same category
+                            so they cancel out.
+                        </span>
+                    </div>
+
                     <div class="alert alert-warning d-flex align-items-center gap-2" role="status"
                          invisible="cash_to_classify_count == 0 and cash_difference_pending_count == 0">
                         <i class="fa fa-exclamation-triangle" title="Action needed"/>
                         <span>
                             <field name="cash_to_classify_count" class="fw-bold"/> cash in/out and
-                            <field name="cash_difference_pending_count" class="fw-bold"/> difference(s) still need a category.
+                            <field name="cash_difference_pending_count" class="fw-bold"/> difference(s) (cash or card) still need a category.
                         </span>
                     </div>
                     <div class="alert alert-success d-flex align-items-center gap-2" role="status"
@@ -108,12 +138,15 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Cash Differences" name="cash_differences">
+                        <page string="Cash &amp; Card Differences" name="cash_differences">
                             <field name="cash_difference_ids" readonly="cash_review_state == 'reviewed'">
                                 <list editable="bottom" create="false" delete="false"
                                       decoration-muted="state == 'classified'">
                                     <field name="name" readonly="1"/>
                                     <field name="date" readonly="1"/>
+                                    <field name="source" widget="badge" readonly="1"
+                                           decoration-info="source == 'card'"/>
+                                    <field name="payment_method_id" readonly="1" optional="show"/>
                                     <field name="difference_type" widget="badge" readonly="1"
                                            decoration-danger="difference_type == 'loss'"
                                            decoration-success="difference_type == 'gain'"/>
@@ -148,6 +181,8 @@
                     </notebook>
                     <field name="currency_id" invisible="1"/>
                     <field name="state" invisible="1"/>
+                    <field name="has_card_methods" invisible="1"/>
+                    <field name="differences_offset" invisible="1"/>
                 </sheet>
                 <chatter/>
             </form>
@@ -167,8 +202,12 @@
                 <field name="stop_at" string="Closed On"/>
                 <field name="cash_in_total" sum="Total"/>
                 <field name="cash_out_total" sum="Total"/>
-                <field name="cash_register_difference" string="Difference" sum="Total"
+                <field name="cash_register_difference" string="Cash Difference" sum="Total"
                        decoration-danger="cash_register_difference &lt; 0" decoration-success="cash_register_difference &gt; 0"/>
+                <field name="card_difference" sum="Total" optional="show"
+                       decoration-danger="card_difference &lt; 0" decoration-success="card_difference &gt; 0"/>
+                <field name="total_difference" sum="Total" optional="show"
+                       decoration-danger="total_difference &lt; 0" decoration-success="total_difference &gt; 0"/>
                 <field name="cash_to_classify_count" string="To Classify"/>
                 <field name="cash_difference_pending_count" string="Differences"/>
                 <field name="cash_review_state" widget="badge"

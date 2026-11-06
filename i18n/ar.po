@@ -2203,3 +2203,58 @@ msgstr "· الإيداع"
 #: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
 msgid "· Your money at a glance"
 msgstr "· أموالك في لمحة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__difference_type__gain
+msgid "Gain"
+msgstr "زيادة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__source__cash
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+msgid "Cash"
+msgstr "نقد"
+
+#. module: expense_cash_control
+#: model:ir.model.fields.selection,name:expense_cash_control.selection__cash_difference_reconciliation__source__card
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
+msgid "Card / Bank"
+msgstr "بطاقة / بنك"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__payment_method_id
+msgid "Payment Method"
+msgstr "طريقة الدفع"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__card_expected_total
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Card Expected"
+msgstr "البطاقة المتوقعة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__card_counted_total
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Card Counted"
+msgstr "البطاقة المعدودة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__card_difference
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Card Difference"
+msgstr "فرق البطاقة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_session__total_difference
+msgid "Net Difference"
+msgstr "صافي الفرق"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Net Difference (Cash + Card)"
+msgstr "صافي الفرق (نقد + بطاقة)"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Cash &amp; Card Differences"
+msgstr "فروقات النقد والبطاقة"

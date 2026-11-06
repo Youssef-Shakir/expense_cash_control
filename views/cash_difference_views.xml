@@ -70,6 +70,8 @@
                 <field name="name" readonly="1"/>
                 <field name="session_id" readonly="1" optional="show"/>
                 <field name="cashier_id" widget="many2one_avatar_user" readonly="1" optional="show"/>
+                <field name="source" widget="badge" readonly="1" decoration-info="source == 'card'"/>
+                <field name="payment_method_id" readonly="1" optional="show"/>
                 <field name="difference_type" widget="badge" readonly="1"
                        decoration-danger="difference_type == 'loss'"
                        decoration-success="difference_type == 'gain'"/>
@@ -125,9 +127,11 @@
                         </button>
                     </div>
                     <div class="oe_title">
+                        <field name="source" widget="badge" decoration-info="source == 'card'"/>
                         <field name="difference_type" widget="badge"
                                decoration-danger="difference_type == 'loss'"
                                decoration-success="difference_type == 'gain'"/>
+                        <field name="payment_method_id" class="ms-2 text-muted" invisible="not payment_method_id"/>
                         <h1><field name="amount"/></h1>
                         <h3 class="text-muted"><field name="name" readonly="1"/></h3>
                     </div>
@@ -184,6 +188,9 @@
                 <filter string="Classified" name="classified" domain="[('state', '=', 'classified')]"/>
                 <separator/>
                 <filter string="Partner Payments" name="partner_payments" domain="[('classification_type', '=', 'partner')]"/>
+                <separator/>
+                <filter string="Cash" name="source_cash" domain="[('source', '=', 'cash')]"/>
+                <filter string="Card / Bank" name="source_card" domain="[('source', '=', 'card')]"/>
                 <separator/>
                 <filter string="Cash Loss" name="loss" domain="[('difference_type', '=', 'loss')]"/>
                 <filter string="Cash Gain" name="gain" domain="[('difference_type', '=', 'gain')]"/>

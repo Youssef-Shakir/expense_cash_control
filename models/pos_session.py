@@ -14,6 +14,22 @@ class PosSession(models.Model):
     cash_to_classify_count = fields.Integer('Cash Moves to Classify', compute='_compute_cash_review_stats')
     cash_difference_pending_count = fields.Integer('Differences to Classify', compute='_compute_cash_review_stats')
 
+    has_card_methods = fields.Boolean(compute='_compute_card_closing')
+    card_expected_total = fields.Monetary(
+        'Card Expected', compute='_compute_card_closing', currency_field='currency_id',
+        help='Card / bank payments registered in the POS during the session.')
+    card_counted_total = fields.Monetary(
+        'Card Counted', compute='_compute_card_closing', currency_field='currency_id',
+        help='What was counted on the card terminal at closing (expected + card difference).')
+    card_difference = fields.Monetary(
+        'Card Difference', compute='_compute_card_closing', currency_field='currency_id',
+        help='Counted minus expected on the card / bank payment methods (positive = gain).')
+    total_difference = fields.Monetary(
+        'Net Difference', compute='_compute_card_closing', currency_field='currency_id',
+        help='Cash difference + card difference. When an order paid in cash is registered as card '
+             '(or the opposite) the two differences cancel out here.')
+    differences_offset = fields.Boolean(compute='_compute_card_closing')
+
     cash_review_state = fields.Selection([
         ('to_review', 'To Review'),
         ('reviewed', 'Reviewed'),
@@ -32,6 +48,31 @@ class PosSession(models.Model):
             session.cash_to_classify_count = len(moves.filtered(lambda m: m.state == 'to_classify'))
             session.cash_difference_pending_count = len(
                 session.cash_difference_ids.filtered(lambda d: d.state == 'pending'))
+
+    @api.depends('cash_difference_ids.amount', 'cash_difference_ids.difference_type',
+                 'cash_difference_ids.source', 'cash_register_difference', 'state')
+    def _compute_card_closing(self):
+        Difference = self.env['cash.difference.reconciliation']
+        expected = {}
+        card_methods = Difference._card_methods(self)
+        if card_methods and self.ids:
+            for session, amount in self.env['pos.payment'].sudo()._read_group(
+                    [('session_id', 'in', self.ids), ('payment_method_id', 'in', card_methods.ids)],
+                    ['session_id'], ['amount:sum']):
+                expected[session.id] = amount
+        for session in self:
+            card = session.cash_difference_ids.filtered(lambda d: d.source == 'card')
+            diff = sum(d.amount if d.difference_type == 'gain' else -d.amount for d in card)
+            cash_diff = session.cash_register_difference if session.state == 'closed' else 0.0
+            session.has_card_methods = bool(Difference._card_methods(session))
+            session.card_expected_total = expected.get(session.id, 0.0)
+            session.card_counted_total = session.card_expected_total + diff
+            session.card_difference = diff
+            session.total_difference = cash_diff + diff
+            currency = session.currency_id
+            session.differences_offset = bool(
+                currency and not currency.is_zero(diff) and not currency.is_zero(cash_diff)
+                and (diff > 0) != (cash_diff > 0))
 
     # -------------------------------------------------------------------------
     # POS: categorized cash in / out

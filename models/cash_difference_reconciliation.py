@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, Command, _
 from odoo.exceptions import UserError
+from odoo.osv import expression
 
 
 class CashDifferenceReconciliation(models.Model):
@@ -20,6 +21,15 @@ class CashDifferenceReconciliation(models.Model):
     session_id = fields.Many2one(
         'pos.session', string='POS Session', readonly=True, index=True,
         help='The POS session closed with this difference')
+    source = fields.Selection([
+        ('cash', 'Cash'),
+        ('card', 'Card / Bank'),
+    ], string='Source', default='cash', readonly=True, required=True,
+        help='Cash: counted cash drawer difference. Card / Bank: difference between the card payments '
+             'registered in the POS and the amount counted on the card terminal at closing.')
+    payment_method_id = fields.Many2one(
+        'pos.payment.method', string='Payment Method', readonly=True,
+        help='The POS payment method the difference was counted on')
     config_id = fields.Many2one(related='session_id.config_id', string='Point of Sale', store=True)
     cashier_id = fields.Many2one(related='session_id.user_id', string='Cashier', store=True)
     date = fields.Date('Date', readonly=True, help='Date of the cash difference')
@@ -33,8 +43,8 @@ class CashDifferenceReconciliation(models.Model):
         'account.account', string='Original Account', readonly=True,
         help='The loss/gain account where the difference was originally posted')
     difference_type = fields.Selection([
-        ('loss', 'Cash Loss'),
-        ('gain', 'Cash Gain'),
+        ('loss', 'Loss'),
+        ('gain', 'Gain'),
     ], string='Type', readonly=True, help='Whether this is a cash shortage (loss) or overage (gain)')
     category_id = fields.Many2one(
         'expense.category', string='Expense Category', tracking=True,
@@ -70,11 +80,12 @@ class CashDifferenceReconciliation(models.Model):
 
     @api.model
     def _find_new_difference_lines(self, sessions=None):
-        """Journal items posted on the cash journals' loss/profit accounts.
+        """Journal items posted on the loss/profit accounts at POS closing.
 
-        POS differences are found through their session (the label is written
-        in the language of whoever closed the session, so it can't be trusted);
-        other cash journal differences are still found by their label.
+        Cash: lines on the cash journals' loss/profit accounts. POS differences are found through
+        their session (the label is written in the language of whoever closed the session, so it
+        can't be trusted); other cash journal differences are still found by their label.
+        Card / Bank: see _find_new_card_difference_lines.
         """
         journal_domain = [('type', '=', 'cash')]
         if sessions is None:
@@ -82,37 +93,95 @@ class CashDifferenceReconciliation(models.Model):
         else:
             journal_domain.append(('id', 'in', sessions.cash_journal_id.ids))
         cash_journals = self.env['account.journal'].search(journal_domain)
-        target_accounts = cash_journals.loss_account_id | cash_journals.profit_account_id
-        if not target_accounts:
-            return self.env['account.move.line'], cash_journals
-
         existing_line_ids = self.with_context(active_test=False).search([]).original_move_line_id.ids
-        domain = [
-            ('account_id', 'in', target_accounts.ids),
-            ('parent_state', '=', 'posted'),
-            ('id', 'not in', existing_line_ids),
-        ]
-        if sessions is not None:
-            domain.append(('move_id.statement_line_id.pos_session_id', 'in', sessions.ids))
-        else:
-            domain += [
-                '|', '|',
-                ('move_id.statement_line_id.pos_session_id', '!=', False),
-                ('name', 'ilike', 'cash difference'),
-                ('move_id.ref', 'ilike', 'cash difference'),
+        lines = self.env['account.move.line']
+        target_accounts = cash_journals.loss_account_id | cash_journals.profit_account_id
+        if target_accounts:
+            domain = [
+                ('account_id', 'in', target_accounts.ids),
+                ('parent_state', '=', 'posted'),
+                ('id', 'not in', existing_line_ids),
             ]
-        return self.env['account.move.line'].search(domain), cash_journals
+            if sessions is not None:
+                domain.append(('move_id.statement_line_id.pos_session_id', 'in', sessions.ids))
+            else:
+                domain += [
+                    '|', '|',
+                    ('move_id.statement_line_id.pos_session_id', '!=', False),
+                    ('name', 'ilike', 'cash difference'),
+                    ('move_id.ref', 'ilike', 'cash difference'),
+                ]
+            lines = self.env['account.move.line'].search(domain)
+        lines |= self._find_new_card_difference_lines(sessions, existing_line_ids + lines.ids)
+        return lines, cash_journals
+
+    @api.model
+    def _card_methods(self, sessions):
+        return sessions.payment_method_ids.filtered(lambda m: m.type == 'bank' and m.journal_id)
+
+    @api.model
+    def _find_new_card_difference_lines(self, sessions=None, exclude_ids=()):
+        """Differences counted on the card / bank payment methods at closing.
+
+        Odoo posts them on the bank journal's loss/profit account: inside the combined payment of
+        the session, or (split transactions) in a separate entry whose reference ends with
+        "(<session name>)". Without ``sessions``, the closed sessions still to review are scanned.
+        """
+        if sessions is None:
+            sessions = self.env['pos.session'].search([
+                ('state', '=', 'closed'), ('cash_review_state', '=', 'to_review'),
+                ('company_id', 'in', self.env.companies.ids)])
+        Line = self.env['account.move.line']
+        methods = self._card_methods(sessions)
+        accounts = methods.journal_id.loss_account_id | methods.journal_id.profit_account_id
+        if not accounts:
+            return Line
+        origins = [[('move_id.origin_payment_id.pos_session_id', 'in', sessions.ids)]]
+        for session in sessions:
+            split = self._card_methods(session).filtered('split_transactions')
+            if split:
+                origins.append([('journal_id', 'in', split.journal_id.ids),
+                                ('move_id.ref', 'ilike', '(%s)' % session.name)])
+        return Line.search(expression.AND([
+            [('account_id', 'in', accounts.ids),
+             ('parent_state', '=', 'posted'),
+             ('id', 'not in', list(exclude_ids))],
+            expression.OR(origins),
+        ]))
+
+    @api.model
+    def _line_origin(self, line):
+        """(source, session, payment method) of a difference journal item."""
+        move = line.move_id
+        if move.statement_line_id.pos_session_id:
+            session = move.statement_line_id.pos_session_id
+            return 'cash', session, session.payment_method_ids.filtered('is_cash_count')[:1]
+        payment = move.origin_payment_id
+        if payment.pos_session_id:
+            return 'card', payment.pos_session_id, payment.pos_payment_method_id
+        ref = move.ref or ''
+        if '(' in ref and ref.endswith(')'):
+            name = ref[ref.rindex('(') + 1:-1]
+            session = self.env['pos.session'].search([('name', '=', name)], limit=1)
+            method = self._card_methods(session).filtered(
+                lambda m: m.split_transactions and m.journal_id == line.journal_id)[:1]
+            if method:
+                return 'card', session, method
+        return 'cash', self.env['pos.session'], self.env['pos.payment.method']
 
     @api.model
     def _create_from_lines(self, move_lines):
         vals_list = []
         for line in move_lines:
+            source, session, method = self._line_origin(line)
             # Loss: money is missing, posted as debit on the loss account.
             # Gain: extra money, posted as credit on the profit account.
             vals_list.append({
                 'original_move_id': line.move_id.id,
                 'original_move_line_id': line.id,
-                'session_id': line.move_id.statement_line_id.pos_session_id.id,
+                'session_id': session.id,
+                'source': source,
+                'payment_method_id': method.id,
                 'date': line.date,
                 'amount': line.debit or line.credit,
                 'currency_id': line.company_currency_id.id,
