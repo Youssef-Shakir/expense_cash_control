@@ -266,6 +266,7 @@ msgstr "كل التصنيفات المتاحة في نقطة البيع"
 #: model:ir.model.fields,field_description:expense_cash_control.field_cash_difference_reconciliation__amount
 #: model:ir.model.fields,field_description:expense_cash_control.field_expense_express__amount
 #: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__amount_abs
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__amount
 msgid "Amount"
 msgstr "المبلغ"
 
@@ -516,6 +517,7 @@ msgstr "صُنّف في نقطة البيع"
 #: model_terms:ir.ui.view,arch_db:expense_cash_control.view_cash_difference_reconciliation_search
 #: model_terms:ir.ui.view,arch_db:expense_cash_control.view_expense_express_search
 #: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__category_id
 msgid "Category"
 msgstr "التصنيف"
 
@@ -740,6 +742,7 @@ msgstr "تطوير"
 
 #. module: expense_cash_control
 #: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_list
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
 msgid "Difference"
 msgstr "الفرق"
 
@@ -1055,6 +1058,7 @@ msgstr "جارٍ التحميل"
 #. module: expense_cash_control
 #. odoo-javascript
 #: code:addons/expense_cash_control/static/src/dashboard/dashboard.xml:0
+#: code:addons/expense_cash_control/models/pos_session.py:0
 msgid "Loss"
 msgstr "العجز"
 
@@ -1558,6 +1562,7 @@ msgstr "مرحّل"
 #. odoo-javascript
 #: code:addons/expense_cash_control/static/src/pos/cash_move_popup.xml:0
 #: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__name
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__name
 msgid "Reason"
 msgstr "السبب"
 
@@ -1766,6 +1771,7 @@ msgstr "التسلسل"
 
 #. module: expense_cash_control
 #: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_cash_move_search
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__session_id
 msgid "Session"
 msgstr "الجلسة"
 
@@ -2258,3 +2264,173 @@ msgstr "صافي الفرق (نقد + بطاقة)"
 #: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
 msgid "Cash &amp; Card Differences"
 msgstr "فروقات النقد والبطاقة"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__late_entry
+msgid "Recorded After Closing"
+msgstr "مسجّل بعد الإغلاق"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_pos_cash_move__late_entry_by_id
+msgid "Added By"
+msgstr "أضافه"
+
+#. module: expense_cash_control
+#: model:ir.model,name:expense_cash_control.model_ecc_session_late_expense
+msgid "Forgotten Expense (after closing)"
+msgstr "مصروف منسي (بعد الإغلاق)"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__counted
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+msgid "Counted"
+msgstr "المعدود"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__expected_before
+msgid "Expected Now"
+msgstr "المتوقع الآن"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__expected_after
+msgid "Expected After"
+msgstr "المتوقع بعد"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__difference_before
+msgid "Difference Now"
+msgstr "الفرق الآن"
+
+#. module: expense_cash_control
+#: model:ir.model.fields,field_description:expense_cash_control.field_ecc_session_late_expense__difference_after
+msgid "Difference After"
+msgstr "الفرق بعد"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+#: code:addons/expense_cash_control/models/pos_session.py:0
+msgid "Forgotten Expense"
+msgstr "مصروف منسي"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "After Closing"
+msgstr "بعد الإغلاق"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Remove"
+msgstr "حذف"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Remove this forgotten expense? The expected cash and the difference are corrected again."
+msgstr "حذف هذا المصروف المنسي؟ سيتم تصحيح النقد المتوقع والفرق مرة أخرى."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_pos_session_cash_review_form
+msgid "Record a cash-out the cashier paid from the drawer but forgot to enter in the POS"
+msgstr "تسجيل مبلغ صرفه الكاشير من الدرج ونسي إدخاله في نقطة البيع"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+msgid "Session cash"
+msgstr "نقد الجلسة"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+msgid "Expected"
+msgstr "المتوقع"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+msgid "Record Expense"
+msgstr "تسجيل المصروف"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+msgid "e.g. Vegetables - Abu Ali"
+msgstr "مثال: خضار - أبو علي"
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+msgid "Classify later..."
+msgstr "التصنيف لاحقاً..."
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+#, python-format
+msgid "Session %s is not closed: record the expense in the POS."
+msgstr "الجلسة %s غير مغلقة: سجّل المصروف في نقطة البيع."
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+#, python-format
+msgid "Session %s has no cash drawer."
+msgstr "الجلسة %s ليس لها درج نقدي."
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+#, python-format
+msgid "Session %s is already reviewed. Reopen the review to correct it."
+msgstr "تمت مراجعة الجلسة %s. أعد فتح المراجعة لتصحيحها."
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+msgid "The amount must be positive."
+msgstr "يجب أن يكون المبلغ موجباً."
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+msgid "Forgotten expense"
+msgstr "مصروف منسي"
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+msgid "out"
+msgstr "صرف"
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+#, python-format
+msgid "Forgotten expense recorded after closing: %(name)s (%(amount)s). Difference %(before)s → %(after)s."
+msgstr "تم تسجيل مصروف منسي بعد الإغلاق: %(name)s (%(amount)s). الفرق %(before)s ← %(after)s."
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+#, python-format
+msgid "Please define a Loss and a Profit Account on the %s journal."
+msgstr "يرجى تحديد حساب الخسارة وحساب الربح في دفتر %s."
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+#, python-format
+msgid "Cash difference observed during the counting (%(kind)s) - corrected after closing"
+msgstr "فرق نقدي عند العد (%(kind)s) - مصحح بعد الإغلاق"
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_session.py:0
+msgid "Profit"
+msgstr "ربح"
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_cash_move.py:0
+msgid "Only cash-outs recorded after closing can be removed here."
+msgstr "يمكن هنا حذف المصروفات المسجلة بعد الإغلاق فقط."
+
+#. module: expense_cash_control
+#: code:addons/expense_cash_control/models/pos_cash_move.py:0
+#, python-format
+msgid "Forgotten expense removed: %(name)s (%(amount)s)."
+msgstr "تم حذف المصروف المنسي: %(name)s (%(amount)s)."
+
+#. module: expense_cash_control
+#: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
+msgid "A cash-out paid from the drawer during the session that the cashier forgot to record. The counted cash stays the same; the expected cash goes down and the cash difference is posted again."
+msgstr "مبلغ صُرف من الدرج خلال الجلسة ونسي الكاشير تسجيله. يبقى النقد المعدود كما هو؛ وينخفض النقد المتوقع ويُعاد ترحيل فرق النقد."

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Expenses & Cash Control',
-    'version': '18.0.2.1.0',
+    'version': '18.0.2.2.0',
     'category': 'Accounting/Expenses',
     'summary': 'Record expenses and bills, categorize POS cash in/out, reconcile cash differences and review closed sessions',
     'description': """
@@ -16,7 +16,7 @@ One app for the daily money flow of a restaurant or shop:
 * Categorized Cash In / Cash Out directly from the POS
 * Daily reconciliation of uncategorized POS cash in/out
 * Classification of POS cash differences (loss / gain)
-* Cash review of every closed POS session
+* Cash review of every closed POS session, with forgotten expenses added after closing
 
 Merges and replaces the former "Expenses Press" (expense_express) and
 "POS Cash In/Out Categories" (pos_cash_category) modules.
@@ -41,6 +41,7 @@ Developed by Yousif Shakir - Donialink | تطوير يوسف شاكر
         'views/expense_views.xml',
         'views/pos_cash_move_views.xml',
         'views/cash_difference_views.xml',
+        'wizard/session_late_expense_views.xml',
         'views/pos_session_views.xml',
         'views/pos_config_views.xml',
         'views/dashboard_views.xml',

@@ -6,3 +6,4 @@ access_cash_difference_reconciliation_user,cash.difference.reconciliation.user,m
 access_cash_difference_reconciliation_manager,cash.difference.reconciliation.manager,model_cash_difference_reconciliation,group_expense_manager,1,1,1,0
 access_pos_cash_move_user,pos.cash.move.user,model_pos_cash_move,group_expense_user,1,0,0,0
 access_pos_cash_move_manager,pos.cash.move.manager,model_pos_cash_move,group_expense_manager,1,1,1,0
+access_ecc_session_late_expense_manager,ecc.session.late.expense.manager,model_ecc_session_late_expense,group_expense_manager,1,1,1,1

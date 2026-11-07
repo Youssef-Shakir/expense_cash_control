@@ -149,6 +149,131 @@ class PosSession(models.Model):
         self._prepare_cash_review()
         return True
 
+    # -------------------------------------------------------------------------
+    # Corrections after closing: forgotten expenses
+    # -------------------------------------------------------------------------
+
+    def _ecc_check_can_correct(self):
+        for session in self:
+            if session.state != 'closed':
+                raise UserError(_('Session %s is not closed: record the expense in the POS.', session.name))
+            if not session.cash_journal_id:
+                raise UserError(_('Session %s has no cash drawer.', session.name))
+            if session.cash_review_state == 'reviewed':
+                raise UserError(_('Session %s is already reviewed. Reopen the review to correct it.', session.name))
+
+    def _ecc_add_late_expense(self, name, amount, category=None):
+        """A cash-out paid from the drawer during the session that the cashier forgot to record.
+
+        The money already left the drawer, so the counted cash (and the cash to collect) does not
+        change: the expected cash goes down by ``amount`` and the cash difference is posted again.
+        Without ``category`` the cash-out waits on the suspense account to be classified like any
+        uncategorized POS cash-out.
+        """
+        self.ensure_one()
+        self._ecc_check_can_correct()
+        currency = self.currency_id
+        if currency.compare_amounts(amount, 0.0) <= 0:
+            raise UserError(_('The amount must be positive.'))
+        if category and not category.account_id:
+            raise UserError(_('The category "%s" has no account.', category.name))
+        name = (name or '').strip() or (category.name if category else _('Forgotten expense'))
+        st_line = self.env['account.bank.statement.line'].sudo().with_company(self.company_id).create({
+            'journal_id': self.cash_journal_id.id,
+            'amount': -amount,
+            'date': self._ecc_closing_date(),
+            'pos_session_id': self.id,
+            'payment_ref': '%s-%s-%s' % (self.name, _('out'), name),
+            'counterpart_account_id': category.account_id.id if category else False,
+        })
+        vals = st_line._prepare_pos_cash_move_vals(category=category)
+        vals.update({
+            'user_id': self.env.user.id,
+            'classified_at_pos': False,
+            'late_entry': True,
+            'late_entry_by_id': self.env.user.id,
+        })
+        move = self.env['pos.cash.move'].sudo().create(vals)
+        self.sudo().cash_real_transaction -= amount
+        before, after = self._ecc_redo_cash_difference()
+        self.message_post(body=_(
+            'Forgotten expense recorded after closing: %(name)s (%(amount)s). '
+            'Difference %(before)s → %(after)s.',
+            name=name, amount=currency.format(amount),
+            before=currency.format(before), after=currency.format(after)))
+        return move
+
+    def _ecc_closing_date(self):
+        self.ensure_one()
+        lines = self.sudo().statement_line_ids.sorted('date')
+        if lines:
+            return lines[-1].date
+        return fields.Date.context_today(self, self.stop_at) if self.stop_at else fields.Date.context_today(self)
+
+    def _ecc_cash_difference_lines(self):
+        """The statement lines Odoo posted for the counted cash difference of the session."""
+        self.ensure_one()
+        journal = self.cash_journal_id
+        accounts = journal.loss_account_id | journal.profit_account_id
+        tracked = self.env['pos.cash.move'].sudo().search([('session_id', '=', self.id)]).statement_line_id
+        return self.sudo().statement_line_ids.filtered(
+            lambda l: l not in tracked and l.line_ids.account_id & accounts)
+
+    def _ecc_redo_cash_difference(self):
+        """Post the cash difference again from the (corrected) expected cash.
+
+        The old difference entry is removed with its difference record (a classified one is reset
+        first, its correcting entry cancelled), then the new difference is posted and collected for
+        the review. Returns (old difference, new difference).
+        """
+        self.ensure_one()
+        currency = self.currency_id
+        old_lines = self._ecc_cash_difference_lines()
+        old = sum(old_lines.mapped('amount'))
+        self.invalidate_recordset(['cash_register_balance_end', 'cash_register_difference'])
+        new = currency.round(self.cash_register_difference)
+        if currency.compare_amounts(old, new) == 0:
+            return old, new
+        journal = self.cash_journal_id
+        account = journal.loss_account_id if new < 0 else journal.profit_account_id
+        if not currency.is_zero(new) and not account:
+            raise UserError(_('Please define a Loss and a Profit Account on the %s journal.', journal.name))
+        date = old_lines[:1].date or self._ecc_closing_date()
+
+        Difference = self.env['cash.difference.reconciliation'].sudo()
+        records = Difference.search([('original_move_id', 'in', old_lines.move_id.ids)])
+        records.filtered(lambda r: r.state == 'classified').action_reset()
+        records.unlink()
+        Difference._unreconcile_lines(old_lines.line_ids)
+        old_lines.unlink()
+
+        if not currency.is_zero(new):
+            self.env['account.bank.statement.line'].sudo().with_company(self.company_id).create({
+                'journal_id': journal.id,
+                'amount': new,
+                'date': date,
+                'pos_session_id': self.id,
+                'payment_ref': _('Cash difference observed during the counting (%(kind)s) - corrected after closing',
+                                 kind=_('Loss') if new < 0 else _('Profit')),
+                'counterpart_account_id': account.id,
+            })
+            lines, _journals = Difference._find_new_difference_lines(self)
+            Difference._create_from_lines(lines)
+        self.invalidate_recordset(['cash_register_balance_end', 'cash_register_difference'])
+        return old, new
+
+    def action_open_late_expense(self):
+        self.ensure_one()
+        self._ecc_check_can_correct()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Forgotten Expense'),
+            'res_model': 'ecc.session.late.expense',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_session_id': self.id},
+        }
+
     def action_open_cash_review(self):
         self.ensure_one()
         return {

@@ -50,6 +50,11 @@ class PosCashMove(models.Model):
     classified_by_id = fields.Many2one('res.users', string='Classified By', readonly=True)
     classified_date = fields.Datetime('Classified On', readonly=True)
     notes = fields.Text('Notes')
+    late_entry = fields.Boolean(
+        'Recorded After Closing', readonly=True, copy=False,
+        help='A cash-out the cashier forgot to record, added from the session review. '
+             'It lowered the expected cash and the cash difference of the session was posted again.')
+    late_entry_by_id = fields.Many2one('res.users', string='Added By', readonly=True, copy=False)
 
     _sql_constraints = [
         ('statement_line_unique', 'UNIQUE(statement_line_id)', 'This cash move is already tracked.'),
@@ -159,6 +164,26 @@ class PosCashMove(models.Model):
                 'classified_by_id': False,
                 'classified_date': False,
             })
+        return True
+
+    def action_remove_late_entry(self):
+        """Undo a forgotten expense added after closing: the expected cash and the difference come back."""
+        for move in self:
+            if not move.late_entry:
+                raise UserError(_('Only cash-outs recorded after closing can be removed here.'))
+            session = move.session_id
+            session._ecc_check_can_correct()
+            amount = move.amount
+            st_line = move.statement_line_id
+            if move.state == 'classified':
+                move.action_reset()   # also undoes what the classification did (bill, owner box...)
+            self._unreconcile_lines(st_line.line_ids)
+            session.message_post(body=_('Forgotten expense removed: %(name)s (%(amount)s).',
+                                        name=move.name, amount=session.currency_id.format(abs(amount))))
+            move.sudo().unlink()
+            st_line.sudo().unlink()
+            session.sudo().cash_real_transaction -= amount
+            session._ecc_redo_cash_difference()
         return True
 
     def write(self, vals):

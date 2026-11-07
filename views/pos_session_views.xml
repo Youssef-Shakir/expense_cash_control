@@ -15,6 +15,10 @@
                     <button name="action_cash_review_refresh" type="object" string="Refresh"
                             invisible="cash_review_state == 'reviewed'"
                             groups="expense_cash_control.group_expense_manager"/>
+                    <button name="action_open_late_expense" type="object" string="Forgotten Expense"
+                            icon="fa-plus-circle" invisible="cash_review_state != 'to_review' or not cash_journal_id"
+                            groups="expense_cash_control.group_expense_manager"
+                            help="Record a cash-out the cashier paid from the drawer but forgot to enter in the POS"/>
                     <button name="action_cash_review_reopen" type="object" string="Reopen Review"
                             invisible="cash_review_state != 'reviewed'"
                             groups="expense_cash_control.group_expense_manager"/>
@@ -127,12 +131,16 @@
                                     <field name="partner_commercial_id" column_invisible="True"/>
 <field name="cash_direction" column_invisible="True"/>
                                     <field name="classified_at_pos" string="At POS" readonly="1" optional="hide"/>
+                                    <field name="late_entry" string="After Closing" readonly="1" optional="show"/>
                                     <field name="state" widget="badge" readonly="1"
                                            decoration-warning="state == 'to_classify'" decoration-success="state == 'classified'"/>
                                     <button name="action_classify" type="object" string="Classify" icon="fa-check"
                                             class="btn-link text-success" invisible="state == 'classified'"/>
                                     <button name="action_reset" type="object" string="Reset" icon="fa-undo"
                                             class="btn-link text-muted" invisible="state != 'classified'"/>
+                                    <button name="action_remove_late_entry" type="object" string="Remove" icon="fa-trash"
+                                            class="btn-link text-danger" invisible="not late_entry"
+                                            confirm="Remove this forgotten expense? The expected cash and the difference are corrected again."/>
                                     <field name="currency_id" column_invisible="True"/>
                                     <field name="company_id" column_invisible="True"/>
                                 </list>
@@ -182,6 +190,7 @@
                     <field name="currency_id" invisible="1"/>
                     <field name="state" invisible="1"/>
                     <field name="has_card_methods" invisible="1"/>
+                    <field name="cash_journal_id" invisible="1"/>
                     <field name="differences_offset" invisible="1"/>
                 </sheet>
                 <chatter/>
