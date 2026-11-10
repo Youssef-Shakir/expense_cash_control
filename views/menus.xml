@@ -17,6 +17,8 @@
     <menuitem id="menu_expense_section" name="Expenses" parent="menu_expense_express_root" sequence="10"/>
     <menuitem id="menu_expense_express_all" name="All Expenses" parent="menu_expense_section"
               action="action_expense_express" sequence="10"/>
+    <menuitem id="menu_ecc_expense_line" name="Expenses &amp; Cash-Outs" parent="menu_expense_section"
+              action="action_ecc_expense_line" sequence="15"/>
     <menuitem id="menu_expense_bills_to_pay" name="Bills to Pay" parent="menu_expense_section"
               action="action_expense_bills_to_pay" sequence="20"/>
 

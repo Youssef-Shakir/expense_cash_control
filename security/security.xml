@@ -46,6 +46,11 @@
         <field name="model_id" ref="model_cash_difference_reconciliation"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
+    <record id="rule_expense_line_company" model="ir.rule">
+        <field name="name">Expenses and cash-outs: multi-company</field>
+        <field name="model_id" ref="model_ecc_expense_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
     <record id="rule_pos_cash_move_company" model="ir.rule">
         <field name="name">POS cash move: multi-company</field>
         <field name="model_id" ref="model_pos_cash_move"/>

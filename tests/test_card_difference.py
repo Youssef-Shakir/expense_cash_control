@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from odoo.exceptions import UserError
 from odoo.tests import tagged
 
 from .common import ExpenseCashCommon
@@ -133,3 +134,36 @@ class TestCardDifference(ExpenseCashCommon):
         self.assertAlmostEqual(card['counted'], 0.0)
         self.assertAlmostEqual(card['difference'], -100.0)
         self.assertAlmostEqual(closing['total_difference'], 0.0)
+
+    def test_forgotten_card_difference(self):
+        """Paid by card but rung up as cash, and the card total not entered at closing: the drawer is short and
+        no card difference was posted. The review records the card difference afterwards; they cancel out."""
+        session = self._open_session()
+        self._order(session, self.cash_method, 100.0)
+        self._close(session, 0.0, {})
+        self.assertEqual(len(session.cash_difference_ids), 1)
+        self.assertAlmostEqual(session.card_difference, 0.0)
+
+        wizard = self.env['ecc.session.card.difference'].with_context(default_session_id=session.id).create({
+            'amount': 100.0, 'difference_type': 'gain', 'name': 'Order paid by card, entered as cash'})
+        self.assertEqual(wizard.payment_method_id, self.card_method)
+        self.assertAlmostEqual(wizard.total_after, 0.0)
+        wizard.action_confirm()
+
+        card = session.cash_difference_ids.filtered(lambda d: d.source == 'card')
+        self.assertEqual((card.difference_type, card.amount, card.payment_method_id), ('gain', 100.0, self.card_method))
+        self.assertEqual(card.original_move_id.state, 'posted')
+        session.invalidate_recordset()
+        self.assertAlmostEqual(session.card_difference, 100.0)
+        self.assertAlmostEqual(session.total_difference, 0.0)
+        self.assertTrue(session.differences_offset)
+
+        # found again by a refresh / the cron? never twice
+        session.action_cash_review_refresh()
+        self.assertEqual(len(session.cash_difference_ids.filtered(lambda d: d.source == 'card')), 1)
+
+        session.cash_difference_ids.category_id = self.category
+        session.cash_difference_ids.action_classify()
+        session.action_cash_review_done()
+        with self.assertRaises(UserError):
+            session._ecc_add_card_difference(self.card_method, 5.0, 'gain')

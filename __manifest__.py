@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Expenses & Cash Control',
-    'version': '18.0.2.2.0',
+    'version': '18.0.2.4.0',
     'category': 'Accounting/Expenses',
     'summary': 'Record expenses and bills, categorize POS cash in/out, reconcile cash differences and review closed sessions',
     'description': """
@@ -38,10 +38,13 @@ Developed by Yousif Shakir - Donialink | تطوير يوسف شاكر
         'data/ir_sequence_data.xml',
         'data/ir_cron_data.xml',
         'views/expense_category_views.xml',
+        'views/expense_line_views.xml',
         'views/expense_views.xml',
         'views/pos_cash_move_views.xml',
         'views/cash_difference_views.xml',
         'wizard/session_late_expense_views.xml',
+        'wizard/session_card_difference_views.xml',
+        'wizard/cash_move_split_views.xml',
         'views/pos_session_views.xml',
         'views/pos_config_views.xml',
         'views/dashboard_views.xml',

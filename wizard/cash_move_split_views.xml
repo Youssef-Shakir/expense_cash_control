@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ecc_cash_move_split_form" model="ir.ui.view">
+        <field name="name">ecc.cash.move.split.form</field>
+        <field name="model">ecc.cash.move.split</field>
+        <field name="arch" type="xml">
+            <form string="Split Cash In / Out">
+                <div class="text-muted mb-2">
+                    One cash-out that holds several things: one line per thing. The parts must add up to the amount;
+                    the cash of the session does not change. Choose a category now or classify the parts later.
+                </div>
+                <group>
+                    <group>
+                        <field name="cash_move_id"/>
+                        <field name="amount"/>
+                    </group>
+                    <group>
+                        <field name="total"/>
+                        <field name="remaining" class="fw-bold" decoration-danger="remaining != 0"
+                               decoration-success="remaining == 0"/>
+                    </group>
+                </group>
+                <field name="line_ids">
+                    <list editable="bottom">
+                        <field name="name" placeholder="e.g. Drain repair"/>
+                        <field name="category_id" options="{'no_create': True, 'no_open': True}"
+                               placeholder="Classify later..."/>
+                        <field name="amount" sum="Total"/>
+                        <field name="currency_id" column_invisible="True"/>
+                        <field name="company_id" column_invisible="True"/>
+                    </list>
+                </field>
+                <field name="currency_id" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+                <footer>
+                    <button name="action_confirm" type="object" string="Split" class="btn-primary"
+                            invisible="remaining != 0"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

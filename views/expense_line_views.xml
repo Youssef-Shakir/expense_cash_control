@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_ecc_expense_line_list" model="ir.ui.view">
+        <field name="name">ecc.expense.line.list</field>
+        <field name="model">ecc.expense.line</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-muted="state == 'draft'">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="source" widget="badge" decoration-info="source == 'pos'"/>
+                <field name="category_id"/>
+                <field name="partner_id" optional="show"/>
+                <field name="config_id" optional="show"/>
+                <field name="session_id" optional="hide"/>
+                <field name="user_id" optional="show"/>
+                <field name="payment_mode" optional="show"/>
+                <field name="state" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="amount" sum="Total"/>
+                <field name="currency_id" column_invisible="True"/>
+                <button name="action_open_source" type="object" string="Open" icon="fa-external-link"
+                        class="btn-link"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ecc_expense_line_pivot" model="ir.ui.view">
+        <field name="name">ecc.expense.line.pivot</field>
+        <field name="model">ecc.expense.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Expenses" sample="1">
+                <field name="category_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_ecc_expense_line_graph" model="ir.ui.view">
+        <field name="name">ecc.expense.line.graph</field>
+        <field name="model">ecc.expense.line</field>
+        <field name="arch" type="xml">
+            <graph string="Expenses" type="bar" sample="1">
+                <field name="category_id"/>
+                <field name="amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_ecc_expense_line_search" model="ir.ui.view">
+        <field name="name">ecc.expense.line.search</field>
+        <field name="model">ecc.expense.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="partner_id"/>
+                <field name="config_id"/>
+                <field name="user_id"/>
+                <filter name="filter_posted" string="Posted" domain="[('state', '=', 'posted')]"/>
+                <separator/>
+                <filter name="filter_expenses" string="Expenses" domain="[('source', '=', 'expense')]"/>
+                <filter name="filter_pos" string="POS Cash-Outs" domain="[('source', '=', 'pos')]"/>
+                <separator/>
+                <filter name="filter_paid_now" string="Paid Now" domain="[('payment_mode', '=', 'paid')]"/>
+                <filter name="filter_to_pay" string="To Pay Later" domain="[('payment_mode', '=', 'to_pay')]"/>
+                <separator/>
+                <filter name="filter_today" string="Today"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_this_month" string="This Month"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_last_month" string="Last Month"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(months=1, day=1)).strftime('%Y-%m-%d')),
+                                 ('date', '&lt;', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_date" string="Date" date="date"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
+                    <filter name="group_source" string="Source" context="{'group_by': 'source'}"/>
+                    <filter name="group_vendor" string="Vendor" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_pos" string="Point of Sale" context="{'group_by': 'config_id'}"/>
+                    <filter name="group_user" string="Recorded By" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ecc_expense_line" model="ir.actions.act_window">
+        <field name="name">Expenses &amp; Cash-Outs</field>
+        <field name="res_model">ecc.expense.line</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="search_view_id" ref="view_ecc_expense_line_search"/>
+        <field name="context">{'search_default_filter_posted': 1, 'search_default_filter_this_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No expenses yet</p>
+            <p>Recorded expenses and the POS cash-outs classified to an expense category, in one list.
+               A cash-out is already booked by its own journal entry: it is shown here, never recorded twice.</p>
+        </field>
+    </record>
+
+</odoo>

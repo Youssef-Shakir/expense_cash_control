@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models, _
+from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError
 
 
@@ -261,6 +261,81 @@ class PosSession(models.Model):
             Difference._create_from_lines(lines)
         self.invalidate_recordset(['cash_register_balance_end', 'cash_register_difference'])
         return old, new
+
+    # -------------------------------------------------------------------------
+    # Corrections after closing: forgotten card difference
+    # -------------------------------------------------------------------------
+
+    def _ecc_card_outstanding_account(self, method):
+        """Account the card payments of ``method`` wait on until the bank pays them (like Odoo's closing)."""
+        self.ensure_one()
+        payments = self.env['account.payment'].sudo().search(
+            [('pos_session_id', '=', self.id), ('pos_payment_method_id', '=', method.id)], limit=1)
+        journal = method.journal_id
+        return (payments.outstanding_account_id or method.outstanding_account_id
+                or journal.inbound_payment_method_line_ids.payment_account_id[:1]
+                or journal.default_account_id)
+
+    def _ecc_add_card_difference(self, method, amount, difference_type, reason=None):
+        """A card difference the cashier did not count at closing, e.g. an order paid by card but rung up
+        as cash: the drawer is short (cash loss) and the card terminal got more (card gain). Posted like Odoo
+        posts a counted card difference, and listed with the session's differences to classify: with the
+        same category, the cash loss and the card gain cancel out."""
+        self.ensure_one()
+        if self.state != 'closed':
+            raise UserError(_('Session %s is not closed.', self.name))
+        if self.cash_review_state == 'reviewed':
+            raise UserError(_('Session %s is already reviewed. Reopen the review to correct it.', self.name))
+        currency = self.currency_id
+        if currency.compare_amounts(amount, 0.0) <= 0:
+            raise UserError(_('The amount must be positive.'))
+        Difference = self.env['cash.difference.reconciliation']
+        if method not in Difference._card_methods(self):
+            raise UserError(_('%s is not a card / bank payment method of this session.', method.name))
+        journal = method.journal_id
+        diff_account = journal.profit_account_id if difference_type == 'gain' else journal.loss_account_id
+        if not diff_account:
+            raise UserError(_('Set the profit and loss accounts of the journal %s first.', journal.name))
+        card_account = self._ecc_card_outstanding_account(method)
+        label = _('Card difference %(method)s: %(reason)s (%(session)s)', method=method.name,
+                  reason=(reason or '').strip() or _('not counted at closing'), session=self.name)
+        if difference_type == 'gain':
+            debit, credit = card_account, diff_account
+        else:
+            debit, credit = diff_account, card_account
+        entry = self.env['account.move'].sudo().with_company(self.company_id).create({
+            'move_type': 'entry', 'journal_id': journal.id, 'date': self._ecc_closing_date(), 'ref': label,
+            'line_ids': [
+                Command.create({'name': label, 'account_id': debit.id, 'debit': amount}),
+                Command.create({'name': label, 'account_id': credit.id, 'credit': amount}),
+            ],
+        })
+        entry.action_post()
+        line = entry.line_ids.filtered(lambda l: l.account_id == diff_account)
+        difference = Difference.sudo().create({
+            'original_move_id': entry.id, 'original_move_line_id': line.id, 'session_id': self.id,
+            'source': 'card', 'payment_method_id': method.id, 'date': entry.date, 'amount': amount,
+            'currency_id': currency.id, 'original_account_id': diff_account.id,
+            'difference_type': difference_type, 'company_id': self.company_id.id,
+            'notes': (reason or '').strip() or False,
+        })
+        self.message_post(body=_('Forgotten card difference recorded: %(method)s %(sign)s%(amount)s (%(reason)s).',
+                                 method=method.name, sign='+' if difference_type == 'gain' else '−',
+                                 amount=currency.format(amount), reason=(reason or '').strip() or '-'))
+        return difference
+
+    def action_open_late_card_difference(self):
+        self.ensure_one()
+        if self.cash_review_state == 'reviewed':
+            raise UserError(_('Session %s is already reviewed. Reopen the review to correct it.', self.name))
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Forgotten Card Difference'),
+            'res_model': 'ecc.session.card.difference',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_session_id': self.id},
+        }
 
     def action_open_late_expense(self):
         self.ensure_one()

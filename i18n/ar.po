@@ -2434,3 +2434,87 @@ msgstr "تم حذف المصروف المنسي: %(name)s (%(amount)s)."
 #: model_terms:ir.ui.view,arch_db:expense_cash_control.view_ecc_session_late_expense_form
 msgid "A cash-out paid from the drawer during the session that the cashier forgot to record. The counted cash stays the same; the expected cash goes down and the cash difference is posted again."
 msgstr "مبلغ صُرف من الدرج خلال الجلسة ونسي الكاشير تسجيله. يبقى النقد المعدود كما هو؛ وينخفض النقد المتوقع ويُعاد ترحيل فرق النقد."
+
+#. module: expense_cash_control
+msgid "Forgotten Card Difference"
+msgstr "فرق بطاقة منسي"
+
+#. module: expense_cash_control
+msgid "Record Card Difference"
+msgstr "تسجيل فرق البطاقة"
+
+#. module: expense_cash_control
+msgid "Card / Bank Method"
+msgstr "طريقة البطاقة / البنك"
+
+#. module: expense_cash_control
+msgid "What happened"
+msgstr "ماذا حدث"
+
+#. module: expense_cash_control
+msgid "The terminal got more (paid by card, recorded as cash)"
+msgstr "الجهاز استلم أكثر (دُفع بالبطاقة وسُجّل نقداً)"
+
+#. module: expense_cash_control
+msgid "The terminal got less (paid in cash, recorded as card)"
+msgstr "الجهاز استلم أقل (دُفع نقداً وسُجّل بطاقة)"
+
+#. module: expense_cash_control
+msgid "Card Difference Now"
+msgstr "فرق البطاقة الآن"
+
+#. module: expense_cash_control
+msgid "Card Difference After"
+msgstr "فرق البطاقة بعد"
+
+#. module: expense_cash_control
+msgid "Total Difference After"
+msgstr "إجمالي الفرق بعد"
+
+#. module: expense_cash_control
+msgid "Split"
+msgstr "تقسيم"
+
+#. module: expense_cash_control
+msgid "Split Cash In / Out"
+msgstr "تقسيم الإيداع / السحب"
+
+#. module: expense_cash_control
+msgid "Amount to Split"
+msgstr "المبلغ المراد تقسيمه"
+
+#. module: expense_cash_control
+msgid "Total of the Parts"
+msgstr "مجموع الأجزاء"
+
+#. module: expense_cash_control
+msgid "Left to Split"
+msgstr "المتبقي للتقسيم"
+
+#. module: expense_cash_control
+msgid "Parts"
+msgstr "الأجزاء"
+
+#. module: expense_cash_control
+msgid "Expenses & Cash-Outs"
+msgstr "المصاريف والسحوبات النقدية"
+
+#. module: expense_cash_control
+msgid "POS Cash-Out"
+msgstr "سحب نقدي من نقطة البيع"
+
+#. module: expense_cash_control
+msgid "POS Cash-Outs"
+msgstr "السحوبات النقدية من نقطة البيع"
+
+#. module: expense_cash_control
+msgid "Paid From"
+msgstr "مدفوع من"
+
+#. module: expense_cash_control
+msgid "Bill Journal"
+msgstr "دفتر الفواتير"
+
+#. module: expense_cash_control
+msgid "Payments"
+msgstr "الدفعات"

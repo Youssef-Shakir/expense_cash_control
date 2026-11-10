@@ -63,6 +63,31 @@ class TestExpense(ExpenseCashCommon):
         with self.assertRaises(UserError):
             expense.amount = 50.0
 
+    def test_bill_takes_the_vendor_open_payment(self):
+        """Like on a vendor bill: the vendor's open payment (cash paid to him earlier) is offered and applied."""
+        payable = self.vendor.property_account_payable_id
+        advance = self.env['account.move'].create({
+            'move_type': 'entry', 'journal_id': self.cash_journal.id, 'line_ids': [
+                (0, 0, {'name': 'cash to vendor', 'account_id': payable.id, 'partner_id': self.vendor.id, 'debit': 25.0}),
+                (0, 0, {'name': 'cash to vendor', 'account_id': self.cash_journal.default_account_id.id,
+                        'credit': 25.0}),
+            ]})
+        advance.action_post()
+        expense = self._expense(payment_mode='to_pay', partner_id=self.vendor.id,
+                                journal_id=self.purchase_journal.id)
+        self.assertTrue(expense.bill_has_outstanding)
+        offered = expense.bill_outstanding_widget['content']
+        line = next(c for c in offered if c['move_id'] == advance.id)
+        self.assertFalse(expense.bill_payments_widget)
+
+        self.env['expense.express'].js_assign_outstanding_line(expense.move_id.id, line['id'])
+        expense.invalidate_recordset()
+        self.assertEqual(expense.payment_state, 'partial')
+        self.assertAlmostEqual(expense.amount_residual, 15.0)
+        self.assertTrue(expense.bill_payments_widget)
+        with self.assertRaises(UserError):
+            self.env['expense.express'].js_assign_outstanding_line(advance.id, line['id'])   # not an expense bill
+
     def test_to_pay_later_requires_vendor(self):
         with self.assertRaises(UserError):
             self._expense(payment_mode='to_pay', journal_id=self.purchase_journal.id)

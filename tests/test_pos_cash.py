@@ -194,3 +194,40 @@ class TestPosCash(ExpenseCashCommon):
         diff.action_reset()
         self.assertEqual(bill.payment_state, 'not_paid')
         self.assertEqual(diff.state, 'pending')
+
+    def test_split_cash_out(self):
+        """One cash-out holding two expenses becomes two, each with its category; the session cash is the same."""
+        session = self._open_session()
+        move = self._cash_move(session, 'out', 55.0, 'repair 25 + shift pay 30')
+        move.category_id = self.category
+        move.action_classify()   # classified as one expense: the split resets it first
+        self._close(session, -55.0)
+        balance = session.cash_register_balance_end
+        other = self.env['expense.category'].create({
+            'name': 'ECC Wages', 'code': 'ECC-WAGE', 'account_id': self.expense_account.copy({'code': 'ECC6011'}).id})
+
+        wizard = self.env['ecc.cash.move.split'].with_context(default_cash_move_id=move.id).create({})
+        self.assertEqual(len(wizard.line_ids), 2)
+        wizard.line_ids[0].write({'name': 'Drain repair', 'amount': 25.0})
+        wizard.line_ids[1].write({'name': 'Shift pay', 'amount': 20.0, 'category_id': other.id})
+        self.assertAlmostEqual(wizard.remaining, 10.0)
+        with self.assertRaises(UserError):
+            wizard.action_confirm()   # does not add up
+        wizard.line_ids[1].amount = 30.0
+        wizard.action_confirm()
+
+        moves = session.cash_move_ids.sorted('id')
+        self.assertEqual([(m.name, m.amount, m.state) for m in moves],
+                         [('Drain repair', -25.0, 'classified'), ('Shift pay', -30.0, 'classified')])
+        self.assertEqual(moves.category_id, self.category | other)
+        self.assertEqual(moves[1].category_id, other)
+        session.invalidate_recordset()
+        self.assertAlmostEqual(session.cash_register_balance_end, balance, msg='the session cash does not change')
+        wage = sum(self.env['account.move.line'].search([
+            ('account_id', '=', other.account_id.id), ('parent_state', '=', 'posted')]).mapped('debit'))
+        self.assertAlmostEqual(wage, 30.0)
+        self.assertEqual(session.cash_out_total, 55.0)
+
+        session.action_cash_review_done()
+        with self.assertRaises(UserError):
+            moves[0].action_open_split()

@@ -34,12 +34,32 @@
                     <widget name="web_ribbon" title="Overdue" bg_color="text-bg-danger"
                             invisible="not is_overdue"/>
 
+                    <div class="o_ecc_mode_bar">
+                        <field name="payment_mode" widget="radio" options="{'horizontal': true}" nolabel="1"
+                               class="o_ecc_mode_toggle" readonly="is_locked"/>
+                        <span class="text-muted small" invisible="payment_mode != 'paid'">
+                            The money already left the cash box or bank account.</span>
+                        <span class="text-muted small" invisible="payment_mode != 'to_pay'">
+                            A vendor bill to pay later: pay it here, or apply the vendor's open payments below.</span>
+                    </div>
+
                     <div class="o_ecc_amount_hero">
-                        <label for="amount" class="o_ecc_hero_label"/>
-                        <div class="o_ecc_hero_value">
-                            <field name="amount" class="o_ecc_amount_input" readonly="is_locked" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <div class="o_ecc_hero_main">
+                            <label for="amount" class="o_ecc_hero_label"/>
+                            <div class="o_ecc_hero_value">
+                                <field name="amount" class="o_ecc_amount_input" readonly="is_locked" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </div>
                         </div>
-                        <field name="payment_mode" widget="selection_badge" class="o_ecc_mode_toggle" readonly="is_locked"/>
+                        <div class="o_ecc_hero_due" invisible="payment_mode != 'to_pay' or not move_id">
+                            <span class="o_ecc_hero_label">Amount Due</span>
+                            <field name="amount_residual" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="payment_state" widget="badge"
+                                   decoration-success="payment_state == 'paid'"
+                                   decoration-info="payment_state == 'in_payment'"
+                                   decoration-warning="payment_state == 'partial'"
+                                   decoration-danger="payment_state == 'not_paid'"/>
+                        </div>
                     </div>
 
                     <div class="oe_title">
@@ -48,27 +68,33 @@
                     </div>
 
                     <group>
-                        <group>
+                        <group string="Expense">
                             <field name="category_id" options="{'no_create_edit': True}" readonly="is_locked"
                                    placeholder="What kind of expense?"/>
                             <field name="date" readonly="is_locked"/>
                             <field name="partner_id" required="payment_mode == 'to_pay'" readonly="is_locked"
                                    placeholder="Who do you owe?"
-                                   invisible="payment_mode != 'to_pay' and not partner_id"
                                    context="{'res_partner_search_mode': 'supplier'}"/>
                         </group>
-                        <group>
-                            <field name="journal_id" options="{'no_create': True}" readonly="is_locked"/>
+                        <group string="Payment">
+                            <label for="journal_id" string="Paid From" invisible="payment_mode != 'paid'"/>
+                            <label for="journal_id" string="Bill Journal" invisible="payment_mode != 'to_pay'"/>
+                            <field name="journal_id" options="{'no_create': True}" readonly="is_locked" nolabel="1"/>
                             <field name="due_date" invisible="payment_mode != 'to_pay'" readonly="is_locked"/>
-                            <field name="payment_state" widget="badge" invisible="payment_mode != 'to_pay' or not move_id"
-                                   decoration-success="payment_state == 'paid'"
-                                   decoration-info="payment_state == 'in_payment'"
-                                   decoration-warning="payment_state == 'partial'"
-                                   decoration-danger="payment_state == 'not_paid'"/>
-                            <field name="amount_residual" invisible="payment_mode != 'to_pay' or payment_state == 'paid'"/>
                             <field name="user_id" widget="many2one_avatar_user"/>
                         </group>
                     </group>
+
+                    <div class="o_ecc_bill_payments" invisible="payment_mode != 'to_pay' or state != 'posted'">
+                        <div class="o_ecc_section_title"><i class="fa fa-exchange me-1" title="Payments"/> Payments</div>
+                        <field name="bill_payments_widget" nolabel="1" widget="payment"/>
+                        <div class="text-muted small" invisible="bill_payments_widget or bill_has_outstanding">
+                            No payment yet. Use Register Payment, or apply an open payment of the vendor when there is one.
+                        </div>
+                        <div invisible="not bill_has_outstanding" class="o_ecc_outstanding">
+                            <field name="bill_outstanding_widget" nolabel="1" widget="payment"/>
+                        </div>
+                    </div>
 
                     <div class="o_ecc_receipts">
                         <div class="o_ecc_section_title">
@@ -89,6 +115,7 @@
                     <field name="move_type" invisible="1"/>
                     <field name="is_overdue" invisible="1"/>
                     <field name="is_locked" invisible="1"/>
+                    <field name="bill_has_outstanding" invisible="1"/>
                 </sheet>
                 <chatter/>
             </form>
@@ -253,10 +280,11 @@
 
     <record id="action_expense_analysis" model="ir.actions.act_window">
         <field name="name">Expense Analysis</field>
-        <field name="res_model">expense.express</field>
+        <field name="res_model">ecc.expense.line</field>
         <field name="view_mode">graph,pivot,list</field>
-        <field name="search_view_id" ref="view_expense_express_search"/>
-        <field name="context">{'search_default_filter_this_month': 1}</field>
+        <field name="view_ids" eval="[(5, 0, 0)]"/>
+        <field name="search_view_id" ref="view_ecc_expense_line_search"/>
+        <field name="context">{'search_default_filter_posted': 1, 'search_default_filter_this_month': 1}</field>
     </record>
 
 </odoo>

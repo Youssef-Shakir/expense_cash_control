@@ -116,6 +116,14 @@ class ExpenseExpress(models.Model):
         compute='_compute_is_locked',
         help='The bill already has a payment: the expense can no longer be changed.')
 
+    bill_payments_widget = fields.Binary(
+        compute='_compute_bill_widgets', exportable=False,
+        help='Payments already reconciled with the bill (as on the vendor bill).')
+    bill_outstanding_widget = fields.Binary(
+        compute='_compute_bill_widgets', exportable=False,
+        help="The vendor's open payments (POS cash-outs, owner payments, advances...) that can pay this bill.")
+    bill_has_outstanding = fields.Boolean(compute='_compute_bill_widgets')
+
     attachment_ids = fields.Many2many(
         'ir.attachment',
         'expense_express_ir_attachment_rel',
@@ -404,6 +412,49 @@ class ExpenseExpress(models.Model):
         result = super().unlink()
         moves._expense_remove()
         return result
+
+    # -------------------------------------------------------------------------
+    # BILL: payments of the vendor, as on the vendor bill
+    # -------------------------------------------------------------------------
+
+    @api.depends('payment_mode', 'move_id.payment_state', 'move_id.amount_residual')
+    def _compute_bill_widgets(self):
+        for expense in self:
+            bill = expense.move_id.sudo()
+            if expense.payment_mode == 'to_pay' and bill.move_type == 'in_invoice':
+                expense.bill_payments_widget = bill.invoice_payments_widget
+                expense.bill_outstanding_widget = bill.invoice_outstanding_credits_debits_widget
+                expense.bill_has_outstanding = bill.invoice_has_outstanding
+            else:
+                expense.bill_payments_widget = False
+                expense.bill_outstanding_widget = False
+                expense.bill_has_outstanding = False
+
+    def _bill_of(self, move_id):
+        """The bill ``move_id`` of an expense the user may change (the payment widget gives the bill id)."""
+        expense = self.search([('move_id', '=', int(move_id))], limit=1)
+        if not expense:
+            raise UserError(_('This bill does not belong to an expense.'))
+        expense.check_access('write')
+        return expense.move_id.sudo()
+
+    @api.model
+    def js_assign_outstanding_line(self, move_id, line_id):
+        """"Add" in the outstanding payments of the bill: reconcile that payment with it."""
+        return self._bill_of(move_id).js_assign_outstanding_line(line_id)
+
+    @api.model
+    def js_remove_outstanding_partial(self, move_id, partial_id):
+        """"Unreconcile" a payment from the bill."""
+        return self._bill_of(move_id).js_remove_outstanding_partial(partial_id)
+
+    def action_open_business_doc(self):
+        """The payment widget opens the document of a payment line by its journal entry id."""
+        entries = self.env['account.move'].browse(self.ids).exists()
+        if not entries:
+            return False
+        entries.check_access('read')
+        return entries[:1].action_open_business_doc()
 
     def action_view_move(self):
         """Open related journal entry / bill."""

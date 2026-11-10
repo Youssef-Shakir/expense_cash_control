@@ -166,6 +166,78 @@ class PosCashMove(models.Model):
             })
         return True
 
+    def action_open_split(self):
+        """Split one cash in / out that holds several things (e.g. "repair 25,000 + shift pay 30,000")."""
+        self.ensure_one()
+        self._check_splittable()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Split %s', self.name),
+            'res_model': 'ecc.cash.move.split',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_cash_move_id': self.id},
+        }
+
+    def _check_splittable(self):
+        self.ensure_one()
+        if self.session_id.cash_review_state == 'reviewed':
+            raise UserError(_('Session %s is already reviewed. Reopen the review to split it.', self.session_id.name))
+        if 'owner_move_ids' in self._fields and self.owner_move_ids:
+            raise UserError(_('"%s" was collected by an owner: it cannot be split.', self.name))
+        _liquidity, suspense, other = self.statement_line_id._seek_for_lines()
+        if (suspense | other).filtered(lambda l: l.matched_debit_ids or l.matched_credit_ids):
+            raise UserError(_('"%s" was already reconciled in Accounting.', self.name))
+
+    def _ecc_split(self, parts):
+        """``parts``: [(description, amount, category or None)], amounts positive and adding up to this move.
+        This move keeps the first part; the others become cash in / out of the same session on the same day
+        (the cash of the session does not change). Parts with a category are classified with it."""
+        self.ensure_one()
+        self._check_splittable()
+        currency = self.currency_id or self.company_id.currency_id
+        if len(parts) < 2:
+            raise UserError(_('Split it in at least two parts.'))
+        if any(currency.compare_amounts(amount, 0.0) <= 0 for _name, amount, _cat in parts):
+            raise UserError(_('Every part needs a positive amount.'))
+        total = sum(amount for _name, amount, _cat in parts)
+        if currency.compare_amounts(total, self.amount_abs):
+            raise UserError(_('The parts add up to %(total)s; the cash-out is %(amount)s.',
+                              total=currency.format(total), amount=currency.format(self.amount_abs)))
+        if self.state == 'classified':
+            self.action_reset()
+        sign = -1 if self.move_type == 'out' else 1
+        kind = _('out') if self.move_type == 'out' else _('in')
+        session = self.session_id
+        st_line = self.statement_line_id.with_context(skip_readonly_check=True)
+        original = self.name
+        (name, amount, category), rest = parts[0], parts[1:]
+        name = (name or '').strip() or original
+        st_line.write({'amount': sign * amount, 'payment_ref': '%s-%s-%s' % (session.name, kind, name)})
+        self.write({'name': name, 'category_id': category.id if category else False,
+                    'classification_type': 'category'})
+        if category:
+            self.action_classify()
+        moves = self
+        for name, amount, category in rest:
+            name = (name or '').strip() or original
+            new_line = self.env['account.bank.statement.line'].sudo().with_company(self.company_id).create({
+                'journal_id': st_line.journal_id.id,
+                'amount': sign * amount,
+                'date': st_line.date,
+                'pos_session_id': session.id,
+                'payment_ref': '%s-%s-%s' % (session.name, kind, name),
+                'counterpart_account_id': category.account_id.id if category else False,
+            })
+            vals = new_line._prepare_pos_cash_move_vals(category=category)
+            vals.update({'user_id': self.user_id.id, 'classified_at_pos': False, 'name': name})
+            moves |= self.sudo().create(vals)
+        session.message_post(body=_('Cash %(kind)s "%(name)s" (%(amount)s) split in %(count)s: %(parts)s.',
+                                    kind=kind, name=original, amount=currency.format(total), count=len(parts),
+                                    parts=', '.join('%s %s' % (n or original, currency.format(a))
+                                                    for n, a, _c in parts)))
+        return moves
+
     def action_remove_late_entry(self):
         """Undo a forgotten expense added after closing: the expected cash and the difference come back."""
         for move in self:

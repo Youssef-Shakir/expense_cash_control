@@ -19,6 +19,10 @@
                             icon="fa-plus-circle" invisible="cash_review_state != 'to_review' or not cash_journal_id"
                             groups="expense_cash_control.group_expense_manager"
                             help="Record a cash-out the cashier paid from the drawer but forgot to enter in the POS"/>
+                    <button name="action_open_late_card_difference" type="object" string="Forgotten Card Difference"
+                            icon="fa-credit-card" invisible="cash_review_state != 'to_review' or not has_card_methods"
+                            groups="expense_cash_control.group_expense_manager"
+                            help="A card difference not entered at closing, e.g. an order paid by card but rung up as cash"/>
                     <button name="action_cash_review_reopen" type="object" string="Reopen Review"
                             invisible="cash_review_state != 'reviewed'"
                             groups="expense_cash_control.group_expense_manager"/>
@@ -138,6 +142,9 @@
                                             class="btn-link text-success" invisible="state == 'classified'"/>
                                     <button name="action_reset" type="object" string="Reset" icon="fa-undo"
                                             class="btn-link text-muted" invisible="state != 'classified'"/>
+                                    <button name="action_open_split" type="object" title="Split" icon="fa-columns"
+                                            class="btn-link text-muted" groups="expense_cash_control.group_expense_manager"
+                                            invisible="parent.cash_review_state == 'reviewed'"/>
                                     <button name="action_remove_late_entry" type="object" string="Remove" icon="fa-trash"
                                             class="btn-link text-danger" invisible="not late_entry"
                                             confirm="Remove this forgotten expense? The expected cash and the difference are corrected again."/>
